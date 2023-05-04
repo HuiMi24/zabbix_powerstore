@@ -1,0 +1,5144 @@
+zabbix_export:
+  version: '6.2'
+  date: '2023-04-13T07:29:06Z'
+  template_groups:
+    -
+      uuid: ee883eb2769a4db39d76892238fb75ed
+      name: PowerStore
+  host_groups:
+    -
+      uuid: 6374f2c5bf67444c883c7bf45dffca10
+      name: PowerStore
+  templates:
+    -
+      uuid: 1b278afea0da45fa9427cbad24acaf6e
+      template: 'Template PowerStore Appliance'
+      name: 'Template PowerStore Appliance'
+      groups:
+        -
+          name: PowerStore
+      items:
+        -
+          uuid: 210680d4f99b451294f4d8701a5dbdb4
+          name: 'Get Ethernet port'
+          type: HTTP_AGENT
+          key: powerstore.eth_port.get
+          delay: 2m
+          history: 1d
+          trends: '0'
+          value_type: TEXT
+          authtype: BASIC
+          username: '{$API_USERNAME}'
+          password: '{$API_PASSWORD}'
+          timeout: 10s
+          url: '{$API_URL}/eth_port'
+          query_fields:
+            -
+              name: select
+              value: '*'
+          tags:
+            -
+              tag: resource
+              value: port
+        -
+          uuid: 3ca39a6e4fb245f99e2414de27d394af
+          name: 'Get FC port'
+          type: HTTP_AGENT
+          key: powerstore.fc_port.get
+          delay: 2m
+          history: 1d
+          trends: '0'
+          value_type: TEXT
+          authtype: BASIC
+          username: '{$API_USERNAME}'
+          password: '{$API_PASSWORD}'
+          timeout: 10s
+          url: '{$API_URL}/fc_port'
+          query_fields:
+            -
+              name: select
+              value: '*'
+          tags:
+            -
+              tag: resource
+              value: port
+        -
+          uuid: e4a153ebaf3d47b2b54bba05c21b10a9
+          name: 'Get hardware DIMM'
+          type: HTTP_AGENT
+          key: powerstore.hardware.dimm.get
+          trends: '0'
+          value_type: TEXT
+          authtype: BASIC
+          username: '{$API_USERNAME}'
+          password: '{$API_PASSWORD}'
+          url: '{$API_URL}/hardware'
+          query_fields:
+            -
+              name: select
+              value: 'type,name,lifecycle_state,slot,extra_details'
+            -
+              name: appliance_id
+              value: 'eq.{$APPLIANCE_ID}'
+            -
+              name: type
+              value: eq.DIMM
+          tags:
+            -
+              tag: resource
+              value: hardware
+        -
+          uuid: e7aac0e1f43d4851b37d5a637199520e
+          name: 'Get hardware drive'
+          type: HTTP_AGENT
+          key: powerstore.hardware.drive.get
+          delay: 5m
+          trends: '0'
+          value_type: TEXT
+          authtype: BASIC
+          username: '{$API_USERNAME}'
+          password: '{$API_PASSWORD}'
+          url: '{$API_URL}/hardware'
+          query_fields:
+            -
+              name: select
+              value: 'type,name,lifecycle_state,slot,extra_details'
+            -
+              name: appliance_id
+              value: 'eq.{$APPLIANCE_ID}'
+            -
+              name: type
+              value: eq.Drive
+          tags:
+            -
+              tag: resource
+              value: hardware
+        -
+          uuid: d5f62768bd164b688e7834ec4c7dde09
+          name: 'Get appliance'
+          type: HTTP_AGENT
+          key: powerstore.resource.appliance.get
+          delay: 5m
+          history: '0'
+          trends: '0'
+          value_type: TEXT
+          authtype: BASIC
+          username: '{$API_USERNAME}'
+          password: '{$API_PASSWORD}'
+          timeout: 5s
+          url: '{$API_URL}/appliance?select=id,name,name,model'
+          query_fields:
+            -
+              name: select
+              value: 'id,name,model,drive_failure_tolerance_level,drive_failure_tolerance_level_l10n,node_count'
+          tags:
+            -
+              tag: resource
+              value: appliance
+        -
+          uuid: 7958a44537444408868d5e7a9c330ca1
+          name: 'Number of appliance'
+          type: DEPENDENT
+          key: powerstore.resource.appliance.number
+          delay: '0'
+          trends: '0'
+          preprocessing:
+            -
+              type: JAVASCRIPT
+              parameters:
+                - |
+                  try {
+                      objects = JSON.parse(value);
+                  }
+                  catch (error) {
+                      Zabbix.log(4, '[ PowerStore ] Failed to parse response.');
+                      objects = [];
+                  }
+                  return objects.length
+          master_item:
+            key: powerstore.resource.appliance.get
+          tags:
+            -
+              tag: resource
+              value: appliance
+        -
+          uuid: 4319ed53fd104e9db135846b68563bd2
+          name: 'Get cluster'
+          type: HTTP_AGENT
+          key: powerstore.resource.cluster.get
+          delay: 5m
+          history: '0'
+          trends: '0'
+          value_type: TEXT
+          authtype: BASIC
+          username: '{$API_USERNAME}'
+          password: '{$API_PASSWORD}'
+          timeout: 5s
+          url: '{$API_URL}/cluster?select=id,name'
+          tags:
+            -
+              tag: resource
+              value: cluster
+        -
+          uuid: 8f77aabe8822459f9b81552539438396
+          name: 'Number of cluster'
+          type: DEPENDENT
+          key: powerstore.resource.cluster.number
+          delay: '0'
+          trends: '0'
+          preprocessing:
+            -
+              type: JAVASCRIPT
+              parameters:
+                - |
+                  try {
+                      objects = JSON.parse(value);
+                  }
+                  catch (error) {
+                      Zabbix.log(4, '[ PowerStore ] Failed to parse response.');
+                      objects = [];
+                  }
+                  return objects.length
+          master_item:
+            key: powerstore.resource.cluster.get
+          tags:
+            -
+              tag: resource
+              value: cluster
+        -
+          uuid: 47f81f06affe494d9566112fe9222bdf
+          name: 'Get file system'
+          type: HTTP_AGENT
+          key: powerstore.resource.file_system.get
+          delay: 5m
+          history: '0'
+          trends: '0'
+          value_type: TEXT
+          authtype: BASIC
+          username: '{$API_USERNAME}'
+          password: '{$API_PASSWORD}'
+          timeout: 5s
+          url: '{$API_URL}/file_system?select=id,name'
+          tags:
+            -
+              tag: resource
+              value: file_system
+        -
+          uuid: 0dca29bd93af4663bf803a745f1e4384
+          name: 'Number of file_system'
+          type: DEPENDENT
+          key: powerstore.resource.file_system.number
+          delay: '0'
+          trends: '0'
+          preprocessing:
+            -
+              type: JAVASCRIPT
+              parameters:
+                - |
+                  try {
+                      objects = JSON.parse(value);
+                  }
+                  catch (error) {
+                      Zabbix.log(4, '[ PowerStore ] Failed to parse response.');
+                      objects = [];
+                  }
+                  return objects.length
+          master_item:
+            key: powerstore.resource.file_system.get
+          tags:
+            -
+              tag: resource
+              value: file_system
+        -
+          uuid: f7f91568934448f9995aa08e7764edae
+          name: 'Get host'
+          type: HTTP_AGENT
+          key: powerstore.resource.host.get
+          delay: 5m
+          history: '0'
+          trends: '0'
+          value_type: TEXT
+          authtype: BASIC
+          username: '{$API_USERNAME}'
+          password: '{$API_PASSWORD}'
+          timeout: 5s
+          url: '{$API_URL}/host?select=id,name'
+          tags:
+            -
+              tag: resource
+              value: host
+        -
+          uuid: c0621aea0b84484f948354bd767c3fe0
+          name: 'Number of host'
+          type: DEPENDENT
+          key: powerstore.resource.host.number
+          delay: '0'
+          trends: '0'
+          preprocessing:
+            -
+              type: JAVASCRIPT
+              parameters:
+                - |
+                  try {
+                      objects = JSON.parse(value);
+                  }
+                  catch (error) {
+                      Zabbix.log(4, '[ PowerStore ] Failed to parse response.');
+                      objects = [];
+                  }
+                  return objects.length
+          master_item:
+            key: powerstore.resource.host.get
+          tags:
+            -
+              tag: resource
+              value: host
+        -
+          uuid: d20c176a02814fe086d758481af99f68
+          name: 'Get host group'
+          type: HTTP_AGENT
+          key: powerstore.resource.host_group.get
+          delay: 5m
+          history: '0'
+          trends: '0'
+          value_type: TEXT
+          authtype: BASIC
+          username: '{$API_USERNAME}'
+          password: '{$API_PASSWORD}'
+          timeout: 5s
+          url: '{$API_URL}/host_group?select=id,name'
+          tags:
+            -
+              tag: resource
+              value: host_group
+        -
+          uuid: e1790413a69d4ac7b2ab6f2e17db4326
+          name: 'Number of host_group'
+          type: DEPENDENT
+          key: powerstore.resource.host_group.number
+          delay: '0'
+          trends: '0'
+          preprocessing:
+            -
+              type: JAVASCRIPT
+              parameters:
+                - |
+                  try {
+                      objects = JSON.parse(value);
+                  }
+                  catch (error) {
+                      Zabbix.log(4, '[ PowerStore ] Failed to parse response.');
+                      objects = [];
+                  }
+                  return objects.length
+          master_item:
+            key: powerstore.resource.host_group.get
+          tags:
+            -
+              tag: resource
+              value: host_group
+        -
+          uuid: 771b984a9d6d495c9f4b7e85ad01428c
+          name: 'Get nas server'
+          type: HTTP_AGENT
+          key: powerstore.resource.nas_server.get
+          delay: 5m
+          history: '0'
+          trends: '0'
+          value_type: TEXT
+          authtype: BASIC
+          username: '{$API_USERNAME}'
+          password: '{$API_PASSWORD}'
+          timeout: 5s
+          url: '{$API_URL}/nas_server?select=id,name'
+          tags:
+            -
+              tag: resource
+              value: nas_server
+        -
+          uuid: b5b0ab9d27f941a98cf625c786c5088d
+          name: 'Number of nas_server'
+          type: DEPENDENT
+          key: powerstore.resource.nas_server.number
+          delay: '0'
+          trends: '0'
+          preprocessing:
+            -
+              type: JAVASCRIPT
+              parameters:
+                - |
+                  try {
+                      objects = JSON.parse(value);
+                  }
+                  catch (error) {
+                      Zabbix.log(4, '[ PowerStore ] Failed to parse response.');
+                      objects = [];
+                  }
+                  return objects.length
+          master_item:
+            key: powerstore.resource.nas_server.get
+          tags:
+            -
+              tag: resource
+              value: nas_server
+        -
+          uuid: 1fe6a029aa5747999e0785f652c5781a
+          name: 'Get node'
+          type: HTTP_AGENT
+          key: powerstore.resource.node.get
+          delay: 5m
+          history: '0'
+          trends: '0'
+          value_type: TEXT
+          authtype: BASIC
+          username: '{$API_USERNAME}'
+          password: '{$API_PASSWORD}'
+          timeout: 5s
+          url: '{$API_URL}/node?select=id'
+          tags:
+            -
+              tag: resource
+              value: node
+        -
+          uuid: 68884fd62cb94f44a2e0b185f5199032
+          name: 'Number of node'
+          type: DEPENDENT
+          key: powerstore.resource.node.number
+          delay: '0'
+          trends: '0'
+          preprocessing:
+            -
+              type: JAVASCRIPT
+              parameters:
+                - |
+                  try {
+                      objects = JSON.parse(value);
+                  }
+                  catch (error) {
+                      Zabbix.log(4, '[ PowerStore ] Failed to parse response.');
+                      objects = [];
+                  }
+                  return objects.length
+          master_item:
+            key: powerstore.resource.node.get
+          tags:
+            -
+              tag: resource
+              value: node
+        -
+          uuid: 337bc46ba81f4aa78137c9dfbf9e7c4c
+          name: 'Get volume'
+          type: HTTP_AGENT
+          key: powerstore.resource.volume.get
+          delay: 5m
+          history: '0'
+          trends: '0'
+          value_type: TEXT
+          authtype: BASIC
+          username: '{$API_USERNAME}'
+          password: '{$API_PASSWORD}'
+          timeout: 5s
+          url: '{$API_URL}/volume?select=id,name&type=neq.Snapshot'
+          tags:
+            -
+              tag: resource
+              value: volume
+        -
+          uuid: 4dddda28992c44fab3cc43e8b8ed9978
+          name: 'Number of volume'
+          type: DEPENDENT
+          key: powerstore.resource.volume.number
+          delay: '0'
+          trends: '0'
+          preprocessing:
+            -
+              type: JAVASCRIPT
+              parameters:
+                - |
+                  try {
+                      objects = JSON.parse(value);
+                  }
+                  catch (error) {
+                      Zabbix.log(4, '[ PowerStore ] Failed to parse response.');
+                      objects = [];
+                  }
+                  return objects.length
+          master_item:
+            key: powerstore.resource.volume.get
+          tags:
+            -
+              tag: resource
+              value: volume
+        -
+          uuid: 405b058d7a82468899e6ee9fca549b59
+          name: 'Get volume group'
+          type: HTTP_AGENT
+          key: powerstore.resource.volume_group.get
+          delay: 5m
+          history: '0'
+          trends: '0'
+          value_type: TEXT
+          authtype: BASIC
+          username: '{$API_USERNAME}'
+          password: '{$API_PASSWORD}'
+          timeout: 5s
+          url: '{$API_URL}/volume_group?select=id,name&type=neq.Snapshot'
+          tags:
+            -
+              tag: resource
+              value: volume_group
+        -
+          uuid: 37fc446420c04735a8cf7d624b353914
+          name: 'Number of volume_group'
+          type: DEPENDENT
+          key: powerstore.resource.volume_group.number
+          delay: '0'
+          trends: '0'
+          preprocessing:
+            -
+              type: JAVASCRIPT
+              parameters:
+                - |
+                  try {
+                      objects = JSON.parse(value);
+                  }
+                  catch (error) {
+                      Zabbix.log(4, '[ PowerStore ] Failed to parse response.');
+                      objects = [];
+                  }
+                  return objects.length
+          master_item:
+            key: powerstore.resource.volume_group.get
+          tags:
+            -
+              tag: resource
+              value: volume_group
+        -
+          uuid: 1777c45d194e427ca696de178a8722b0
+          name: 'Get SAS port'
+          type: HTTP_AGENT
+          key: powerstore.sas_port.get
+          delay: 2m
+          history: 1d
+          trends: '0'
+          value_type: TEXT
+          authtype: BASIC
+          username: '{$API_USERNAME}'
+          password: '{$API_PASSWORD}'
+          timeout: 10s
+          url: '{$API_URL}/sas_port'
+          query_fields:
+            -
+              name: select
+              value: '*'
+          tags:
+            -
+              tag: resource
+              value: port
+      discovery_rules:
+        -
+          uuid: 6c4ae03f00894c5ab0c92d2829a77e12
+          name: 'Discovery Ethernet port'
+          type: DEPENDENT
+          key: powerstore.eth_port.discovery
+          delay: '0'
+          item_prototypes:
+            -
+              uuid: 14446c8a551641f5ba735d63d01e2ed4
+              name: '{#NAME} current mtu'
+              type: DEPENDENT
+              key: 'powerstore.eth_port.current_mtu.[{#NAME}]'
+              delay: '0'
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[?(@.name==''{#NAME}'')].current_mtu.first()'
+              master_item:
+                key: powerstore.eth_port.get
+              tags:
+                -
+                  tag: hardware
+                  value: 'eth port'
+            -
+              uuid: 9abf2e4446b84c59a402adaad4f5e198
+              name: '{#NAME} current speed'
+              type: DEPENDENT
+              key: 'powerstore.eth_port.current_speed.[{#NAME}]'
+              delay: '0'
+              trends: '0'
+              value_type: CHAR
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[?(@.name==''{#NAME}'')].current_speed.first()'
+              master_item:
+                key: powerstore.eth_port.get
+              tags:
+                -
+                  tag: hardware
+                  value: 'eth port'
+            -
+              uuid: 875e36dcf12b4d8595e70fedb2eea35b
+              name: '{#NAME} is in use'
+              type: DEPENDENT
+              key: 'powerstore.eth_port.is_in_use.[{#NAME}]'
+              delay: '0'
+              trends: '0'
+              value_type: CHAR
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[?(@.name==''{#NAME}'')].is_in_use.first()'
+              master_item:
+                key: powerstore.eth_port.get
+              tags:
+                -
+                  tag: hardware
+                  value: 'eth port'
+            -
+              uuid: 145265b8d19f4c5883ce9d29aed5ebbc
+              name: '{#NAME} is link up'
+              type: DEPENDENT
+              key: 'powerstore.eth_port.is_link_up.[{#NAME}]'
+              delay: '0'
+              trends: '0'
+              value_type: CHAR
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[?(@.name==''{#NAME}'')].is_link_up.first()'
+              master_item:
+                key: powerstore.eth_port.get
+              tags:
+                -
+                  tag: hardware
+                  value: 'eth port'
+          trigger_prototypes:
+            -
+              uuid: 36145705c0374a14b1a5298124b462f2
+              expression: 'last(/Template PowerStore Appliance/powerstore.eth_port.is_in_use.[{#NAME}])="true" and last(/Template PowerStore Appliance/powerstore.eth_port.is_link_up.[{#NAME}])="false"'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'last(/Template PowerStore Appliance/powerstore.eth_port.is_link_up.[{#NAME}])="true"'
+              name: 'The Ethernet port {#NAME} is link down'
+              priority: HIGH
+              tags:
+                -
+                  tag: hardware
+                  value: 'fc port'
+          master_item:
+            key: powerstore.eth_port.get
+          lld_macro_paths:
+            -
+              lld_macro: '{#CURRENT_MTU}'
+              path: $.current_mtu
+            -
+              lld_macro: '{#CURRENT_SPEED}'
+              path: $.current_speed
+            -
+              lld_macro: '{#IS_IN_USE}'
+              path: $.is_in_use
+            -
+              lld_macro: '{#IS_LINK_UP}'
+              path: $.is_link_up
+            -
+              lld_macro: '{#NAME}'
+              path: $.name
+          preprocessing:
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              parameters:
+                - 1h
+        -
+          uuid: 2cd059c2f1c14f169a6effc4570f944b
+          name: 'Discovery hardware DIMM'
+          type: DEPENDENT
+          key: powerstore.hardware.dimm.discovery
+          delay: '0'
+          item_prototypes:
+            -
+              uuid: af8b8d007f6748f98b362c306f62a651
+              name: 'State of {#NAME}'
+              type: DEPENDENT
+              key: 'powerstore.hardware.dimm.lifecycle_state.[{#TYPE},{#NAME}]'
+              delay: '0'
+              trends: '0'
+              value_type: CHAR
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[?(@.name==''{#NAME}'')].lifecycle_state.first()'
+              master_item:
+                key: powerstore.hardware.dimm.get
+              tags:
+                -
+                  tag: hardware
+                  value: '{#TYPE}'
+              trigger_prototypes:
+                -
+                  uuid: 99b7c104bd8a4e4b8ebda6a90647cc3c
+                  expression: 'last(/Template PowerStore Appliance/powerstore.hardware.dimm.lifecycle_state.[{#TYPE},{#NAME}])="Disconnected"'
+                  recovery_mode: RECOVERY_EXPRESSION
+                  recovery_expression: 'last(/Template PowerStore Appliance/powerstore.hardware.dimm.lifecycle_state.[{#TYPE},{#NAME}])="Healthy"'
+                  name: 'State of {#NAME} has disconnected'
+                  priority: HIGH
+                  description: 'The {#TYPE} was removed from the system, the slot is {#SLOT}'
+                -
+                  uuid: aee89cd786fe437b8733e1b1047f4186
+                  expression: 'last(/Template PowerStore Appliance/powerstore.hardware.dimm.lifecycle_state.[{#TYPE},{#NAME}])="Failed"'
+                  recovery_mode: RECOVERY_EXPRESSION
+                  recovery_expression: 'last(/Template PowerStore Appliance/powerstore.hardware.dimm.lifecycle_state.[{#TYPE},{#NAME}])="Healthy"'
+                  name: 'State of {#NAME} has failed'
+                  priority: DISASTER
+                  description: 'The {#NAME} has failed, the slot is {#SLOT}'
+                  tags:
+                    -
+                      tag: hardware
+                      value: '{#TYPE}'
+          master_item:
+            key: powerstore.hardware.dimm.get
+          lld_macro_paths:
+            -
+              lld_macro: '{#LIFECYCLE_STATE}'
+              path: $.lifecycle_state
+            -
+              lld_macro: '{#NAME}'
+              path: $.name
+            -
+              lld_macro: '{#TYPE}'
+              path: $.type
+            -
+              lld_macro: '{#SLOT}'
+              path: $.slot
+        -
+          uuid: e609973e72824a1db2484020c1d108fc
+          name: 'Discovery hardware drive'
+          type: DEPENDENT
+          key: powerstore.hardware.drive.discovery
+          delay: '0'
+          item_prototypes:
+            -
+              uuid: fadb53d1cfd841d493b8b044f13e8025
+              name: 'State of {#NAME}'
+              type: DEPENDENT
+              key: 'powerstore.hardware.lifecycle_state.[{#TYPE},{#NAME}]'
+              delay: '0'
+              trends: '0'
+              value_type: CHAR
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[?(@.name==''{#NAME}'')].lifecycle_state.first()'
+              master_item:
+                key: powerstore.hardware.drive.get
+              tags:
+                -
+                  tag: hardware
+                  value: '{#TYPE}'
+              trigger_prototypes:
+                -
+                  uuid: 6dc446190ddf478f92c8232857543601
+                  expression: 'last(/Template PowerStore Appliance/powerstore.hardware.lifecycle_state.[{#TYPE},{#NAME}])="Disconnected"'
+                  recovery_mode: RECOVERY_EXPRESSION
+                  recovery_expression: 'last(/Template PowerStore Appliance/powerstore.hardware.lifecycle_state.[{#TYPE},{#NAME}])="Healthy"'
+                  name: 'State of {#NAME} has disconnected'
+                  priority: HIGH
+                  description: 'The {#NAME} was removed from the system. Slot is {#SLOT}'
+                -
+                  uuid: 1c6b3eaa9bfa42bb9104c995be25b709
+                  expression: 'last(/Template PowerStore Appliance/powerstore.hardware.lifecycle_state.[{#TYPE},{#NAME}])<>"Healthy"'
+                  recovery_mode: RECOVERY_EXPRESSION
+                  recovery_expression: 'last(/Template PowerStore Appliance/powerstore.hardware.lifecycle_state.[{#TYPE},{#NAME}])="Healthy"'
+                  name: 'State of {#NAME} has failed'
+                  priority: DISASTER
+                  description: 'The {#NAME} has failed, slot is {#SLOT}'
+          master_item:
+            key: powerstore.hardware.drive.get
+          lld_macro_paths:
+            -
+              lld_macro: '{#LIFECYCLE_STATE}'
+              path: $.lifecycle_state
+            -
+              lld_macro: '{#NAME}'
+              path: $.name
+            -
+              lld_macro: '{#SLOT}'
+              path: $.slot
+            -
+              lld_macro: '{#TYPE}'
+              path: $.type
+        -
+          uuid: dcb6bed25ffc4c509960112a0a70a27a
+          name: 'Discovery FC port metric'
+          type: DEPENDENT
+          key: powerstore.metric.performance_metrics_by_fc_port.discovery
+          delay: '0'
+          item_prototypes:
+            -
+              uuid: ce2255d7301d4407b30ff3262ed9178a
+              name: '{#NAME} current speed'
+              type: DEPENDENT
+              key: 'powerstore.fc_port.current_speed.[{#NAME}]'
+              delay: '0'
+              trends: '0'
+              value_type: CHAR
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[?(@.name==''{#NAME}'')].current_speed.first()'
+              master_item:
+                key: powerstore.fc_port.get
+              tags:
+                -
+                  tag: hardware
+                  value: 'fc port'
+            -
+              uuid: 3e265777214a422e8736d7b0748e5bea
+              name: '{#NAME} is in use'
+              type: DEPENDENT
+              key: 'powerstore.fc_port.is_in_use.[{#NAME}]'
+              delay: '0'
+              trends: '0'
+              value_type: CHAR
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[?(@.is_in_use==''{#IS_IN_USE}'')].is_in_use.first()'
+              master_item:
+                key: powerstore.fc_port.get
+              tags:
+                -
+                  tag: hardware
+                  value: 'fc port'
+            -
+              uuid: c92c482713724700b446e50cb24380e9
+              name: '{#NAME} is link up'
+              type: DEPENDENT
+              key: 'powerstore.fc_port.is_link_up.[{#NAME}]'
+              delay: '0'
+              trends: '0'
+              value_type: CHAR
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[?(@.name==''{#NAME}'')].is_link_up.first()'
+              master_item:
+                key: powerstore.fc_port.get
+              tags:
+                -
+                  tag: hardware
+                  value: 'fc port'
+          master_item:
+            key: powerstore.fc_port.get
+          lld_macro_paths:
+            -
+              lld_macro: '{#CURRENT_SPEED}'
+              path: $.current_speed
+            -
+              lld_macro: '{#IS_IN_USE}'
+              path: $.is_in_use
+            -
+              lld_macro: '{#IS_LINK_UP}'
+              path: $.is_link_up
+            -
+              lld_macro: '{#NAME}'
+              path: $.name
+          preprocessing:
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              parameters:
+                - 1h
+        -
+          uuid: 0c2adc2607f44dc89b81f6cd050c8750
+          name: 'Discovery appliance'
+          type: DEPENDENT
+          key: powerstore.resource.appliance.discovery
+          delay: '0'
+          item_prototypes:
+            -
+              uuid: 3d2987b7b548414f9d25b10076cf6f04
+              name: 'Get appliance {#NAME} performance_metrics_by_appliance'
+              type: HTTP_AGENT
+              key: 'powerstore.discovery.metric.appliance.performance_metrics_by_appliance.metric.[{#ID}]'
+              delay: 5m
+              history: '0'
+              trends: '0'
+              value_type: TEXT
+              authtype: BASIC
+              username: '{$API_USERNAME}'
+              password: '{$API_PASSWORD}'
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[-1]'
+              timeout: 20s
+              url: '{$API_URL}/metrics/generate'
+              posts: '{"entity": "performance_metrics_by_appliance", "entity_id": "{#ID}", "interval": "Twenty_Sec"}'
+              post_type: JSON
+              request_method: POST
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: 1422741b18504936967750b59a75a0b5
+              name: 'Get appliance {#NAME} performance_metrics_file_by_appliance'
+              type: HTTP_AGENT
+              key: 'powerstore.discovery.metric.appliance.performance_metrics_file_by_appliance.metric.[{#ID}]'
+              delay: 5m
+              history: '0'
+              trends: '0'
+              value_type: TEXT
+              authtype: BASIC
+              username: '{$API_USERNAME}'
+              password: '{$API_PASSWORD}'
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[-1]'
+              timeout: 20s
+              url: '{$API_URL}/metrics/generate'
+              posts: '{"entity": "performance_metrics_file_by_appliance", "entity_id": "{#ID}", "interval": "Twenty_Sec"}'
+              post_type: JSON
+              request_method: POST
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: 79dd8771c6e64467992796d0808016e5
+              name: 'Get appliance {#NAME} space_metrics_by_appliance'
+              type: HTTP_AGENT
+              key: 'powerstore.discovery.metric.appliance.space_metrics_by_appliance.metric.[{#ID}]'
+              delay: 5m
+              history: '0'
+              trends: '0'
+              value_type: TEXT
+              authtype: BASIC
+              username: '{$API_USERNAME}'
+              password: '{$API_PASSWORD}'
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[-1]'
+              timeout: 20s
+              url: '{$API_URL}/metrics/generate'
+              posts: '{"entity": "space_metrics_by_appliance", "entity_id": "{#ID}", "interval": "Five_Mins"}'
+              post_type: JSON
+              request_method: POST
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: e665525666334dc8ae5d045d56290057
+              name: model
+              type: DEPENDENT
+              key: 'powerstore.resource.appliance.model.[{#ID}]'
+              delay: '0'
+              trends: '0'
+              value_type: CHAR
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[?(@.id==''{#ID}'')].model.first()'
+              master_item:
+                key: powerstore.resource.appliance.get
+              tags:
+                -
+                  tag: resource
+                  value: appliance
+            -
+              uuid: 82145384099f49dfaa2e409affd85d71
+              name: name
+              type: DEPENDENT
+              key: 'powerstore.resource.appliance.name.[{#ID}]'
+              delay: '0'
+              trends: '0'
+              value_type: CHAR
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[?(@.id==''{#ID}'')].name.first()'
+              master_item:
+                key: powerstore.resource.appliance.get
+              tags:
+                -
+                  tag: resource
+                  value: appliance
+            -
+              uuid: ba5d56a627a740549be885617b91bc96
+              name: '{#NAME} performance metrics by appliance avg_io_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_appliance.avg_io_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_io_size
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.performance_metrics_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: bae46e77e2c54186886ff0aa9450f4ae
+              name: '{#NAME} performance metrics by appliance avg_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_appliance.avg_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_latency
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.performance_metrics_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: bea4841b5f5b47f8a2c202c5087b4f4f
+              name: '{#NAME} performance metrics by appliance avg_read_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_appliance.avg_read_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_read_latency
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.performance_metrics_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: db8e14e8ae9c455782dd39cce1d810f0
+              name: '{#NAME} performance metrics by appliance avg_read_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_appliance.avg_read_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_read_size
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.performance_metrics_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: a957406cd5d94394b8790da378f9af13
+              name: '{#NAME} performance metrics by appliance avg_write_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_appliance.avg_write_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_write_latency
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.performance_metrics_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: e7083824e47b47d88d992eaacb0df712
+              name: '{#NAME} performance metrics by appliance avg_write_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_appliance.avg_write_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_write_size
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.performance_metrics_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: 315c277d178d418ba85ef55d88442f34
+              name: '{#NAME} performance metrics by appliance io_workload_cpu_utilization'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_appliance.io_workload_cpu_utilization.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.io_workload_cpu_utilization
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.performance_metrics_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: 26019143d07340478838717dcbf5c977
+              name: '{#NAME} performance metrics by appliance read_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_appliance.read_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.read_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.performance_metrics_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: b93c13a07025428ea1b1bfc719bbf29e
+              name: '{#NAME} performance metrics by appliance read_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_appliance.read_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.read_iops
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.performance_metrics_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: 7aaa2a5fca2b4e0d82c8bc780d58d88a
+              name: '{#NAME} performance metrics by appliance total_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_appliance.total_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.total_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.performance_metrics_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: 5d5fd955c8974513aa86c9c98dd34c69
+              name: '{#NAME} performance metrics by appliance total_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_appliance.total_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.total_iops
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.performance_metrics_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: e920c57c49c54ecc8e6956f92cd06064
+              name: '{#NAME} performance metrics by appliance write_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_appliance.write_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.write_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.performance_metrics_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: df3c20df1d274d608f5cfd022650ea3f
+              name: '{#NAME} performance metrics by appliance write_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_appliance.write_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.write_iops
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.performance_metrics_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: 4999648915f346038c66e71df457f3b3
+              name: '{#NAME} performance metrics file by appliance avg_io_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_appliance.avg_io_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_io_size
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.performance_metrics_file_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: 0c848d7f3d024f608436e0185ea56973
+              name: '{#NAME} performance metrics file by appliance avg_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_appliance.avg_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_latency
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.performance_metrics_file_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: 62d5ff561cb14b01b3b6e79d30656e2b
+              name: '{#NAME} performance metrics file by appliance avg_read_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_appliance.avg_read_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_read_latency
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.performance_metrics_file_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: 3e05f63406614a2a81a07f1f213669cb
+              name: '{#NAME} performance metrics file by appliance avg_read_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_appliance.avg_read_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_read_size
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.performance_metrics_file_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: 63362b7ecaef4586a983d38adf2cad53
+              name: '{#NAME} performance metrics file by appliance avg_write_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_appliance.avg_write_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_write_latency
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.performance_metrics_file_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: 09570d3878f84385a09b2f0af4970990
+              name: '{#NAME} performance metrics file by appliance avg_write_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_appliance.avg_write_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_write_size
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.performance_metrics_file_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: 68681f587b59444ba7fab474d42700a3
+              name: '{#NAME} performance metrics file by appliance read_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_appliance.read_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.read_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.performance_metrics_file_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: 86f2d8ae6ce24736a41bd68b3023b33a
+              name: '{#NAME} performance metrics file by appliance read_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_appliance.read_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.read_iops
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.performance_metrics_file_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: 4b3814411ae64da7b9c3cabe80150bd0
+              name: '{#NAME} performance metrics file by appliance total_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_appliance.total_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.total_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.performance_metrics_file_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: f8e912b97e444ac9a988c8fb0895f1cd
+              name: '{#NAME} performance metrics file by appliance total_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_appliance.total_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.total_iops
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.performance_metrics_file_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: 67ccd00ebc31424491c77ada7b283a1f
+              name: '{#NAME} performance metrics file by appliance write_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_appliance.write_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.write_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.performance_metrics_file_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: 637e05516fae4015a533928712c2cf2d
+              name: '{#NAME} performance metrics file by appliance write_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_appliance.write_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.write_iops
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.performance_metrics_file_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: 61b3d25bef0f421f8bee8469832be126
+              name: '{#NAME} space metrics by appliance data_reduction'
+              type: DEPENDENT
+              key: 'powerstore.resource.space_metrics_by_appliance.data_reduction.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.data_reduction
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.space_metrics_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: a1e0c4d39a87487e869737f30528e08b
+              name: '{#NAME} space metrics by appliance efficiency_ratio'
+              type: DEPENDENT
+              key: 'powerstore.resource.space_metrics_by_appliance.efficiency_ratio.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.efficiency_ratio
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.space_metrics_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: b74cd4da3106424e9b3ca80d9615aba2
+              name: '{#NAME} space metrics by appliance logical_used'
+              type: DEPENDENT
+              key: 'powerstore.resource.space_metrics_by_appliance.logical_used.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.logical_used
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.space_metrics_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: a2ee67f27b024ad69c31203fd9a5349e
+              name: '{#NAME} space metrics by appliance logical_used_file_system'
+              type: DEPENDENT
+              key: 'powerstore.resource.space_metrics_by_appliance.logical_used_file_system.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.logical_used_file_system
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.space_metrics_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: baeff542ace34eaa9516c85474d2ac7b
+              name: '{#NAME} space metrics by appliance logical_used_volume'
+              type: DEPENDENT
+              key: 'powerstore.resource.space_metrics_by_appliance.logical_used_volume.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.logical_used_volume
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.space_metrics_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: d4aa824a40a845278597b0fbde8c8263
+              name: '{#NAME} space metrics by appliance logical_used_vvol'
+              type: DEPENDENT
+              key: 'powerstore.resource.space_metrics_by_appliance.logical_used_vvol.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.logical_used_vvol
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.space_metrics_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: ca0016fc00ed43f39eb65baf1b9808ef
+              name: '{#NAME} space metrics by appliance physical_free'
+              type: CALCULATED
+              key: 'powerstore.resource.space_metrics_by_appliance.physical_free.metric.[{#ID}]'
+              delay: 5m
+              value_type: FLOAT
+              params: 'last(//powerstore.resource.space_metrics_by_appliance.physical_total.metric.[{#ID}]) - last(//powerstore.resource.space_metrics_by_appliance.physical_used.metric.[{#ID}])'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: 31e45a01dc0f4245ae40aff36f73c0c3
+              name: '{#NAME} space metrics by appliance physical_total'
+              type: DEPENDENT
+              key: 'powerstore.resource.space_metrics_by_appliance.physical_total.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.physical_total
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.space_metrics_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: 45c3e192646c432c9a86303574a5221e
+              name: '{#NAME} space metrics by appliance physical_used'
+              type: DEPENDENT
+              key: 'powerstore.resource.space_metrics_by_appliance.physical_used.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.physical_used
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.space_metrics_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: 465a24b71ef444eb8a46e0260f59cc4d
+              name: '{#NAME} space metrics by appliance system_free_space'
+              type: DEPENDENT
+              key: 'powerstore.resource.space_metrics_by_appliance.system_free_space.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.system_free_space
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.space_metrics_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+            -
+              uuid: 318ddceabe104b519ebed1b9ca945b02
+              name: '{#NAME} space metrics by appliance thin_savings'
+              type: DEPENDENT
+              key: 'powerstore.resource.space_metrics_by_appliance.thin_savings.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.thin_savings
+              master_item:
+                key: 'powerstore.discovery.metric.appliance.space_metrics_by_appliance.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: appliance
+          master_item:
+            key: powerstore.resource.appliance.get
+          lld_macro_paths:
+            -
+              lld_macro: '{#NAME}'
+              path: $.name
+            -
+              lld_macro: '{#ID}'
+              path: $.id
+          preprocessing:
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              parameters:
+                - '3600'
+        -
+          uuid: 7ca609df532c4f29af180af49d6b5103
+          name: 'Discovery cluster'
+          type: DEPENDENT
+          key: powerstore.resource.cluster.discovery
+          delay: '0'
+          item_prototypes:
+            -
+              uuid: f64f8bae008b4bfca4068a333065d53c
+              name: 'Get cluster {#NAME} performance_metrics_by_cluster'
+              type: HTTP_AGENT
+              key: 'powerstore.discovery.metric.cluster.performance_metrics_by_cluster.metric.[{#ID}]'
+              delay: 5m
+              history: '0'
+              trends: '0'
+              value_type: TEXT
+              authtype: BASIC
+              username: '{$API_USERNAME}'
+              password: '{$API_PASSWORD}'
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[-1]'
+              timeout: 20s
+              url: '{$API_URL}/metrics/generate'
+              posts: '{"entity": "performance_metrics_by_cluster", "entity_id": "{#ID}", "interval": "Twenty_Sec"}'
+              post_type: JSON
+              request_method: POST
+              tags:
+                -
+                  tag: metric
+                  value: cluster
+            -
+              uuid: 5360be7165db47f180af6d69f078c7d7
+              name: 'Get cluster {#NAME} performance_metrics_file_by_cluster'
+              type: HTTP_AGENT
+              key: 'powerstore.discovery.metric.cluster.performance_metrics_file_by_cluster.metric.[{#ID}]'
+              delay: 5m
+              history: '0'
+              trends: '0'
+              value_type: TEXT
+              authtype: BASIC
+              username: '{$API_USERNAME}'
+              password: '{$API_PASSWORD}'
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[-1]'
+              timeout: 20s
+              url: '{$API_URL}/metrics/generate'
+              posts: '{"entity": "performance_metrics_file_by_cluster", "entity_id": "{#ID}", "interval": "Twenty_Sec"}'
+              post_type: JSON
+              request_method: POST
+              tags:
+                -
+                  tag: metric
+                  value: cluster
+            -
+              uuid: 376335c3dbf74e0eb4906541dedef117
+              name: '{#NAME} performance metrics by cluster avg_io_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_cluster.avg_io_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_io_size
+              master_item:
+                key: 'powerstore.discovery.metric.cluster.performance_metrics_by_cluster.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: cluster
+            -
+              uuid: 5bef78b9c14d4804a3dbd022d4facfe3
+              name: '{#NAME} performance metrics by cluster avg_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_cluster.avg_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_latency
+              master_item:
+                key: 'powerstore.discovery.metric.cluster.performance_metrics_by_cluster.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: cluster
+            -
+              uuid: 0f7e04892b4d4407930d9025b81d6e20
+              name: '{#NAME} performance metrics by cluster avg_read_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_cluster.avg_read_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_read_latency
+              master_item:
+                key: 'powerstore.discovery.metric.cluster.performance_metrics_by_cluster.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: cluster
+            -
+              uuid: 21c5fb2b5ea04234a703d1f78b8faf39
+              name: '{#NAME} performance metrics by cluster avg_read_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_cluster.avg_read_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_read_size
+              master_item:
+                key: 'powerstore.discovery.metric.cluster.performance_metrics_by_cluster.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: cluster
+            -
+              uuid: 935f1227505f494db164ffbf2ba77b3e
+              name: '{#NAME} performance metrics by cluster avg_write_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_cluster.avg_write_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_write_latency
+              master_item:
+                key: 'powerstore.discovery.metric.cluster.performance_metrics_by_cluster.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: cluster
+            -
+              uuid: 8e9c4d57b4334301b15faf3687937541
+              name: '{#NAME} performance metrics by cluster avg_write_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_cluster.avg_write_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_write_size
+              master_item:
+                key: 'powerstore.discovery.metric.cluster.performance_metrics_by_cluster.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: cluster
+            -
+              uuid: 0f9f7180e1fa466ea6f002d5baf9252a
+              name: '{#NAME} performance metrics by cluster read_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_cluster.read_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.read_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.cluster.performance_metrics_by_cluster.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: cluster
+            -
+              uuid: 2ea23afebf7847358726b31c11e1a63a
+              name: '{#NAME} performance metrics by cluster read_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_cluster.read_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.read_iops
+              master_item:
+                key: 'powerstore.discovery.metric.cluster.performance_metrics_by_cluster.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: cluster
+            -
+              uuid: 12b3db53e5a24d3182dc44c181bbd48e
+              name: '{#NAME} performance metrics by cluster total_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_cluster.total_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.total_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.cluster.performance_metrics_by_cluster.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: cluster
+            -
+              uuid: d78558850b024337b9092316c619a794
+              name: '{#NAME} performance metrics by cluster total_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_cluster.total_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.total_iops
+              master_item:
+                key: 'powerstore.discovery.metric.cluster.performance_metrics_by_cluster.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: cluster
+            -
+              uuid: 27c08d6596974fc9a569c01b5a94fd62
+              name: '{#NAME} performance metrics by cluster write_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_cluster.write_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.write_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.cluster.performance_metrics_by_cluster.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: cluster
+            -
+              uuid: 7965b7ce1771457d858e2e2bab556e52
+              name: '{#NAME} performance metrics by cluster write_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_cluster.write_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.write_iops
+              master_item:
+                key: 'powerstore.discovery.metric.cluster.performance_metrics_by_cluster.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: cluster
+            -
+              uuid: 04fb336783494d738f8fdd392c917529
+              name: '{#NAME} performance metrics file by cluster avg_io_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_cluster.avg_io_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_io_size
+              master_item:
+                key: 'powerstore.discovery.metric.cluster.performance_metrics_file_by_cluster.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: cluster
+            -
+              uuid: cea9bf836f02402db16595537109ceb2
+              name: '{#NAME} performance metrics file by cluster avg_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_cluster.avg_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_latency
+              master_item:
+                key: 'powerstore.discovery.metric.cluster.performance_metrics_file_by_cluster.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: cluster
+            -
+              uuid: f0c1a799597a429491834aeb57958f90
+              name: '{#NAME} performance metrics file by cluster avg_read_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_cluster.avg_read_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_read_latency
+              master_item:
+                key: 'powerstore.discovery.metric.cluster.performance_metrics_file_by_cluster.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: cluster
+            -
+              uuid: 13d19545dfc44ff6947b11e3677f2e44
+              name: '{#NAME} performance metrics file by cluster avg_read_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_cluster.avg_read_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_read_size
+              master_item:
+                key: 'powerstore.discovery.metric.cluster.performance_metrics_file_by_cluster.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: cluster
+            -
+              uuid: f2c81711cf104a45a0241e6b23cda4cd
+              name: '{#NAME} performance metrics file by cluster avg_write_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_cluster.avg_write_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_write_latency
+              master_item:
+                key: 'powerstore.discovery.metric.cluster.performance_metrics_file_by_cluster.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: cluster
+            -
+              uuid: b56b5ba5d56a43579f01006e6334e3ee
+              name: '{#NAME} performance metrics file by cluster avg_write_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_cluster.avg_write_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_write_size
+              master_item:
+                key: 'powerstore.discovery.metric.cluster.performance_metrics_file_by_cluster.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: cluster
+            -
+              uuid: b1aeac96cbca47e29cc9c21f8e48f0ea
+              name: '{#NAME} performance metrics file by cluster read_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_cluster.read_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.read_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.cluster.performance_metrics_file_by_cluster.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: cluster
+            -
+              uuid: 8870c65a848c4e768d0e14065f84bbc0
+              name: '{#NAME} performance metrics file by cluster read_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_cluster.read_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.read_iops
+              master_item:
+                key: 'powerstore.discovery.metric.cluster.performance_metrics_file_by_cluster.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: cluster
+            -
+              uuid: b3fd3c48a5dd4f538024f7994fcfcf96
+              name: '{#NAME} performance metrics file by cluster total_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_cluster.total_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.total_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.cluster.performance_metrics_file_by_cluster.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: cluster
+            -
+              uuid: d26fe2be38fd4a67b457d6ce432b9fc0
+              name: '{#NAME} performance metrics file by cluster total_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_cluster.total_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.total_iops
+              master_item:
+                key: 'powerstore.discovery.metric.cluster.performance_metrics_file_by_cluster.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: cluster
+            -
+              uuid: 5bc45fd85846413788bcc28afd330b1e
+              name: '{#NAME} performance metrics file by cluster write_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_cluster.write_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.write_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.cluster.performance_metrics_file_by_cluster.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: cluster
+            -
+              uuid: b513731ece824e9cbe9b5df07675a5b7
+              name: '{#NAME} performance metrics file by cluster write_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_cluster.write_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.write_iops
+              master_item:
+                key: 'powerstore.discovery.metric.cluster.performance_metrics_file_by_cluster.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: cluster
+          master_item:
+            key: powerstore.resource.cluster.get
+          lld_macro_paths:
+            -
+              lld_macro: '{#NAME}'
+              path: $.name
+            -
+              lld_macro: '{#ID}'
+              path: $.id
+          preprocessing:
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              parameters:
+                - '3600'
+        -
+          uuid: 450c0dd88f804010ae7c2ebdf94ef0dc
+          name: 'Discovery file_system'
+          type: DEPENDENT
+          key: powerstore.resource.file_system.discovery
+          delay: '0'
+          item_prototypes:
+            -
+              uuid: 625c0016427a42418391f23c63a46966
+              name: 'Get file_system {#NAME} performance_metrics_by_file_system'
+              type: HTTP_AGENT
+              key: 'powerstore.discovery.metric.file_system.performance_metrics_by_file_system.metric.[{#ID}]'
+              delay: 5m
+              history: '0'
+              trends: '0'
+              value_type: TEXT
+              authtype: BASIC
+              username: '{$API_USERNAME}'
+              password: '{$API_PASSWORD}'
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[-1]'
+              timeout: 20s
+              url: '{$API_URL}/metrics/generate'
+              posts: '{"entity": "performance_metrics_by_file_system", "entity_id": "{#ID}", "interval": "Twenty_Sec"}'
+              post_type: JSON
+              request_method: POST
+              tags:
+                -
+                  tag: metric
+                  value: file_system
+            -
+              uuid: 815a2bc1b411462ba275d18a9ff57d70
+              name: 'Get file_system {#NAME} space_metrics_by_file_system'
+              type: HTTP_AGENT
+              key: 'powerstore.discovery.metric.file_system.space_metrics_by_file_system.metric.[{#ID}]'
+              delay: 5m
+              history: '0'
+              trends: '0'
+              value_type: TEXT
+              authtype: BASIC
+              username: '{$API_USERNAME}'
+              password: '{$API_PASSWORD}'
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[-1]'
+              timeout: 20s
+              url: '{$API_URL}/metrics/generate'
+              posts: '{"entity": "space_metrics_by_file_system", "entity_id": "{#ID}", "interval": "Five_Mins"}'
+              post_type: JSON
+              request_method: POST
+              tags:
+                -
+                  tag: metric
+                  value: file_system
+            -
+              uuid: 66f191f216584ea7b51fa40a72f95658
+              name: '{#NAME} performance metrics by file system avg_io_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_file_system.avg_io_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_io_size
+              master_item:
+                key: 'powerstore.discovery.metric.file_system.performance_metrics_by_file_system.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: file_system
+            -
+              uuid: d2042a6928f641aca9d525af6c687a02
+              name: '{#NAME} performance metrics by file system avg_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_file_system.avg_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_latency
+              master_item:
+                key: 'powerstore.discovery.metric.file_system.performance_metrics_by_file_system.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: file_system
+            -
+              uuid: e9274fd71b1d49eb8d78cfb044de2dd4
+              name: '{#NAME} performance metrics by file system avg_read_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_file_system.avg_read_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_read_latency
+              master_item:
+                key: 'powerstore.discovery.metric.file_system.performance_metrics_by_file_system.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: file_system
+            -
+              uuid: 9a0bdae5935a49ad890a4da52a213464
+              name: '{#NAME} performance metrics by file system avg_read_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_file_system.avg_read_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_read_size
+              master_item:
+                key: 'powerstore.discovery.metric.file_system.performance_metrics_by_file_system.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: file_system
+            -
+              uuid: 17fb5fe01c22428a8c3435f314534cbf
+              name: '{#NAME} performance metrics by file system avg_write_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_file_system.avg_write_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_write_latency
+              master_item:
+                key: 'powerstore.discovery.metric.file_system.performance_metrics_by_file_system.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: file_system
+            -
+              uuid: bdd3fa01ad084402b8eac7e3ff814e74
+              name: '{#NAME} performance metrics by file system avg_write_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_file_system.avg_write_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_write_size
+              master_item:
+                key: 'powerstore.discovery.metric.file_system.performance_metrics_by_file_system.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: file_system
+            -
+              uuid: 7c1745fe2ec5498f8d9a179580440f57
+              name: '{#NAME} performance metrics by file system read_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_file_system.read_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.read_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.file_system.performance_metrics_by_file_system.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: file_system
+            -
+              uuid: d9bf574cd7e442c5baafd01134087d82
+              name: '{#NAME} performance metrics by file system read_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_file_system.read_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.read_iops
+              master_item:
+                key: 'powerstore.discovery.metric.file_system.performance_metrics_by_file_system.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: file_system
+            -
+              uuid: 300c335fac474ace9ce8b0dcc1fedecf
+              name: '{#NAME} performance metrics by file system total_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_file_system.total_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.total_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.file_system.performance_metrics_by_file_system.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: file_system
+            -
+              uuid: 1abaebba3b4f4154bcfdc01f6bc35826
+              name: '{#NAME} performance metrics by file system total_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_file_system.total_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.total_iops
+              master_item:
+                key: 'powerstore.discovery.metric.file_system.performance_metrics_by_file_system.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: file_system
+            -
+              uuid: 9bcb48f5db5e480380131eef4aa3be26
+              name: '{#NAME} performance metrics by file system write_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_file_system.write_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.write_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.file_system.performance_metrics_by_file_system.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: file_system
+            -
+              uuid: 9baa5708986a493a852d8dcc6b2db2e8
+              name: '{#NAME} performance metrics by file system write_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_file_system.write_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.write_iops
+              master_item:
+                key: 'powerstore.discovery.metric.file_system.performance_metrics_by_file_system.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: file_system
+            -
+              uuid: 5e79528a8188442388ebf8fd65aad605
+              name: '{#NAME} space metrics by file system free'
+              type: CALCULATED
+              key: 'powerstore.resource.space_metrics_by_file_system.free.metric.[{#ID}]'
+              delay: 5m
+              params: 'avg(//powerstore.resource.space_metrics_by_file_system.logical_provisioned.metric.[{#ID}], 8m) - avg(//powerstore.resource.space_metrics_by_file_system.logical_used.metric.[{#ID}], 8m)'
+              tags:
+                -
+                  tag: metric
+                  value: file_system
+            -
+              uuid: f382ed5f052e43088c531f27445efe2a
+              name: '{#NAME} space metrics by file system logical_provisioned'
+              type: DEPENDENT
+              key: 'powerstore.resource.space_metrics_by_file_system.logical_provisioned.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.logical_provisioned
+              master_item:
+                key: 'powerstore.discovery.metric.file_system.space_metrics_by_file_system.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: file_system
+            -
+              uuid: bd431e7d773d466cbe89fd2e7b314ce7
+              name: '{#NAME} space metrics by file system logical_used'
+              type: DEPENDENT
+              key: 'powerstore.resource.space_metrics_by_file_system.logical_used.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.logical_used
+              master_item:
+                key: 'powerstore.discovery.metric.file_system.space_metrics_by_file_system.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: file_system
+            -
+              uuid: 805e869fcf30483aa3e08b1997ddf912
+              name: '{#NAME} space metrics by file system thin_savings'
+              type: DEPENDENT
+              key: 'powerstore.resource.space_metrics_by_file_system.thin_savings.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.thin_savings
+              master_item:
+                key: 'powerstore.discovery.metric.file_system.space_metrics_by_file_system.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: file_system
+          master_item:
+            key: powerstore.resource.file_system.get
+          lld_macro_paths:
+            -
+              lld_macro: '{#NAME}'
+              path: $.name
+            -
+              lld_macro: '{#ID}'
+              path: $.id
+          preprocessing:
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              parameters:
+                - '3600'
+        -
+          uuid: ef539613787a42c0b79cbd98e9edc910
+          name: 'Discovery host'
+          type: DEPENDENT
+          key: powerstore.resource.host.discovery
+          delay: '0'
+          item_prototypes:
+            -
+              uuid: d341d78394544dd6add2e4997903c689
+              name: 'Get host {#NAME} performance_metrics_by_host'
+              type: HTTP_AGENT
+              key: 'powerstore.discovery.metric.host.performance_metrics_by_host.metric.[{#ID}]'
+              delay: 5m
+              history: '0'
+              trends: '0'
+              value_type: TEXT
+              authtype: BASIC
+              username: '{$API_USERNAME}'
+              password: '{$API_PASSWORD}'
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[-1]'
+              timeout: 20s
+              url: '{$API_URL}/metrics/generate'
+              posts: '{"entity": "performance_metrics_by_host", "entity_id": "{#ID}", "interval": "Twenty_Sec"}'
+              post_type: JSON
+              request_method: POST
+              tags:
+                -
+                  tag: metric
+                  value: host
+            -
+              uuid: 7307f8bc26084e8198727898219b9a9e
+              name: '{#NAME} performance metrics by host avg_io_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_host.avg_io_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_io_size
+              master_item:
+                key: 'powerstore.discovery.metric.host.performance_metrics_by_host.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: host
+            -
+              uuid: 5c457fe9e13747369d7a8fe3a7f8e2be
+              name: '{#NAME} performance metrics by host avg_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_host.avg_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_latency
+              master_item:
+                key: 'powerstore.discovery.metric.host.performance_metrics_by_host.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: host
+            -
+              uuid: ee51eecb6b484f2aa501d2da4e82902a
+              name: '{#NAME} performance metrics by host avg_read_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_host.avg_read_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_read_latency
+              master_item:
+                key: 'powerstore.discovery.metric.host.performance_metrics_by_host.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: host
+            -
+              uuid: 2988c1bb54134445bb03b17363904af0
+              name: '{#NAME} performance metrics by host avg_read_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_host.avg_read_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_read_size
+              master_item:
+                key: 'powerstore.discovery.metric.host.performance_metrics_by_host.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: host
+            -
+              uuid: 362f360b3be14377a36d9a094cbd83e8
+              name: '{#NAME} performance metrics by host avg_write_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_host.avg_write_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_write_latency
+              master_item:
+                key: 'powerstore.discovery.metric.host.performance_metrics_by_host.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: host
+            -
+              uuid: c35922fe717e4357a80b53ba547ae717
+              name: '{#NAME} performance metrics by host avg_write_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_host.avg_write_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_write_size
+              master_item:
+                key: 'powerstore.discovery.metric.host.performance_metrics_by_host.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: host
+            -
+              uuid: 72e9f482ca354513bbb15a82e437caa5
+              name: '{#NAME} performance metrics by host read_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_host.read_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.read_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.host.performance_metrics_by_host.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: host
+            -
+              uuid: 0e8d6e10f50141b98b06d9c098565827
+              name: '{#NAME} performance metrics by host read_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_host.read_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.read_iops
+              master_item:
+                key: 'powerstore.discovery.metric.host.performance_metrics_by_host.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: host
+            -
+              uuid: d15de4dcf88f473cb3ef627352fad112
+              name: '{#NAME} performance metrics by host total_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_host.total_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.total_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.host.performance_metrics_by_host.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: host
+            -
+              uuid: b835086ab5c840a19d00808bb3b67319
+              name: '{#NAME} performance metrics by host total_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_host.total_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.total_iops
+              master_item:
+                key: 'powerstore.discovery.metric.host.performance_metrics_by_host.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: host
+            -
+              uuid: ed7bfb3cc3174d35bc8ff35c169360ad
+              name: '{#NAME} performance metrics by host write_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_host.write_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.write_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.host.performance_metrics_by_host.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: host
+            -
+              uuid: 5fb840a495b7416588b504700a3a9f91
+              name: '{#NAME} performance metrics by host write_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_host.write_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.write_iops
+              master_item:
+                key: 'powerstore.discovery.metric.host.performance_metrics_by_host.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: host
+          master_item:
+            key: powerstore.resource.host.get
+          lld_macro_paths:
+            -
+              lld_macro: '{#NAME}'
+              path: $.name
+            -
+              lld_macro: '{#ID}'
+              path: $.id
+          preprocessing:
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              parameters:
+                - '3600'
+        -
+          uuid: 9ecf21d52fab4c02a219be4de97b0ab2
+          name: 'Discovery host_group'
+          type: DEPENDENT
+          key: powerstore.resource.host_group.discovery
+          delay: '0'
+          item_prototypes:
+            -
+              uuid: 70dc59224fd842979845b9ece08512c7
+              name: 'Get host_group {#NAME} performance_metrics_by_hg'
+              type: HTTP_AGENT
+              key: 'powerstore.discovery.metric.host_group.performance_metrics_by_hg.metric.[{#ID}]'
+              delay: 5m
+              history: '0'
+              trends: '0'
+              value_type: TEXT
+              authtype: BASIC
+              username: '{$API_USERNAME}'
+              password: '{$API_PASSWORD}'
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[-1]'
+              timeout: 20s
+              url: '{$API_URL}/metrics/generate'
+              posts: '{"entity": "performance_metrics_by_hg", "entity_id": "{#ID}", "interval": "Twenty_Sec"}'
+              post_type: JSON
+              request_method: POST
+              tags:
+                -
+                  tag: metric
+                  value: host_group
+            -
+              uuid: 4ab8f6eb9c34485a955e50f480fb3148
+              name: '{#NAME} performance metrics by hg avg_io_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_hg.avg_io_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_io_size
+              master_item:
+                key: 'powerstore.discovery.metric.host_group.performance_metrics_by_hg.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: host_group
+            -
+              uuid: 186937dd99e542898533a5594224a6ef
+              name: '{#NAME} performance metrics by hg avg_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_hg.avg_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_latency
+              master_item:
+                key: 'powerstore.discovery.metric.host_group.performance_metrics_by_hg.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: host_group
+            -
+              uuid: cc3163dfc08f460981727f7129999a46
+              name: '{#NAME} performance metrics by hg avg_read_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_hg.avg_read_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_read_latency
+              master_item:
+                key: 'powerstore.discovery.metric.host_group.performance_metrics_by_hg.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: host_group
+            -
+              uuid: 043772398b024801a143969de5f29490
+              name: '{#NAME} performance metrics by hg avg_read_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_hg.avg_read_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_read_size
+              master_item:
+                key: 'powerstore.discovery.metric.host_group.performance_metrics_by_hg.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: host_group
+            -
+              uuid: 298d365caa2b467ab668e82464b13260
+              name: '{#NAME} performance metrics by hg avg_write_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_hg.avg_write_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_write_latency
+              master_item:
+                key: 'powerstore.discovery.metric.host_group.performance_metrics_by_hg.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: host_group
+            -
+              uuid: 1709ce3438e54f2f96ff71da35fc6165
+              name: '{#NAME} performance metrics by hg avg_write_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_hg.avg_write_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_write_size
+              master_item:
+                key: 'powerstore.discovery.metric.host_group.performance_metrics_by_hg.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: host_group
+            -
+              uuid: e1544903f13e4e179110e3b8be076578
+              name: '{#NAME} performance metrics by hg read_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_hg.read_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.read_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.host_group.performance_metrics_by_hg.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: host_group
+            -
+              uuid: 93af2b5084064fb38d5d0ccae93113b1
+              name: '{#NAME} performance metrics by hg read_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_hg.read_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.read_iops
+              master_item:
+                key: 'powerstore.discovery.metric.host_group.performance_metrics_by_hg.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: host_group
+            -
+              uuid: 283e8c2bc6714637842439aedd39f9be
+              name: '{#NAME} performance metrics by hg total_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_hg.total_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.total_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.host_group.performance_metrics_by_hg.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: host_group
+            -
+              uuid: b1cf6d8b5bc34a09bb3b876c5efb945a
+              name: '{#NAME} performance metrics by hg total_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_hg.total_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.total_iops
+              master_item:
+                key: 'powerstore.discovery.metric.host_group.performance_metrics_by_hg.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: host_group
+            -
+              uuid: b6825186143048ac810f3b9577e4208a
+              name: '{#NAME} performance metrics by hg write_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_hg.write_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.write_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.host_group.performance_metrics_by_hg.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: host_group
+            -
+              uuid: 640f249564f84d858b3fe349bc1fc7a5
+              name: '{#NAME} performance metrics by hg write_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_hg.write_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.write_iops
+              master_item:
+                key: 'powerstore.discovery.metric.host_group.performance_metrics_by_hg.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: host_group
+          master_item:
+            key: powerstore.resource.host_group.get
+          lld_macro_paths:
+            -
+              lld_macro: '{#NAME}'
+              path: $.name
+            -
+              lld_macro: '{#ID}'
+              path: $.id
+          preprocessing:
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              parameters:
+                - '3600'
+        -
+          uuid: 060a3d4eeae6422eae287c981a5b62c7
+          name: 'Discovery nas_server'
+          type: DEPENDENT
+          key: powerstore.resource.nas_server.discovery
+          delay: '0'
+          item_prototypes:
+            -
+              uuid: e4f5c3191fc24ffbae4288b2fce6264f
+              name: 'Get nas_server {#NAME} performance_metrics_by_nas_server'
+              type: HTTP_AGENT
+              key: 'powerstore.discovery.metric.nas_server.performance_metrics_by_nas_server.metric.[{#ID}]'
+              delay: 5m
+              history: '0'
+              trends: '0'
+              value_type: TEXT
+              authtype: BASIC
+              username: '{$API_USERNAME}'
+              password: '{$API_PASSWORD}'
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[-1]'
+              timeout: 20s
+              url: '{$API_URL}/metrics/generate'
+              posts: '{"entity": "performance_metrics_by_nas_server", "entity_id": "{#ID}", "interval": "Twenty_Sec"}'
+              post_type: JSON
+              request_method: POST
+              tags:
+                -
+                  tag: metric
+                  value: nas_server
+            -
+              uuid: 6063f7219ba04d87ba1d43ddde044677
+              name: '{#NAME} performance metrics by nas server avg_io_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_nas_server.avg_io_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_io_size
+              master_item:
+                key: 'powerstore.discovery.metric.nas_server.performance_metrics_by_nas_server.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: nas_server
+            -
+              uuid: e3e9b49cb7e34780b7638651a1728039
+              name: '{#NAME} performance metrics by nas server avg_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_nas_server.avg_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_latency
+              master_item:
+                key: 'powerstore.discovery.metric.nas_server.performance_metrics_by_nas_server.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: nas_server
+            -
+              uuid: a9b6ee1d83e9404a827f6473a78accff
+              name: '{#NAME} performance metrics by nas server avg_read_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_nas_server.avg_read_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_read_latency
+              master_item:
+                key: 'powerstore.discovery.metric.nas_server.performance_metrics_by_nas_server.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: nas_server
+            -
+              uuid: 6610ce56a5dc4fe18762db4a78cf18f2
+              name: '{#NAME} performance metrics by nas server avg_read_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_nas_server.avg_read_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_read_size
+              master_item:
+                key: 'powerstore.discovery.metric.nas_server.performance_metrics_by_nas_server.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: nas_server
+            -
+              uuid: 99d505bd2356491f983e1e8095038e1f
+              name: '{#NAME} performance metrics by nas server avg_write_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_nas_server.avg_write_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_write_latency
+              master_item:
+                key: 'powerstore.discovery.metric.nas_server.performance_metrics_by_nas_server.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: nas_server
+            -
+              uuid: ea4b3ce1b7a54ee2b6de8fb81c5dfee5
+              name: '{#NAME} performance metrics by nas server avg_write_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_nas_server.avg_write_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_write_size
+              master_item:
+                key: 'powerstore.discovery.metric.nas_server.performance_metrics_by_nas_server.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: nas_server
+            -
+              uuid: 39391050a029482d92ff5cf655b59362
+              name: '{#NAME} performance metrics by nas server read_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_nas_server.read_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.read_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.nas_server.performance_metrics_by_nas_server.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: nas_server
+            -
+              uuid: 2596c0e4191f47948066c35e23618172
+              name: '{#NAME} performance metrics by nas server read_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_nas_server.read_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.read_iops
+              master_item:
+                key: 'powerstore.discovery.metric.nas_server.performance_metrics_by_nas_server.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: nas_server
+            -
+              uuid: ca549948ff994825b68283c4ecb916a2
+              name: '{#NAME} performance metrics by nas server total_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_nas_server.total_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.total_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.nas_server.performance_metrics_by_nas_server.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: nas_server
+            -
+              uuid: 8c651e95c6d944128b12e9e43149f9f1
+              name: '{#NAME} performance metrics by nas server total_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_nas_server.total_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.total_iops
+              master_item:
+                key: 'powerstore.discovery.metric.nas_server.performance_metrics_by_nas_server.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: nas_server
+            -
+              uuid: 7eb1bc6f10444b089a29513fa1bca748
+              name: '{#NAME} performance metrics by nas server write_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_nas_server.write_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.write_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.nas_server.performance_metrics_by_nas_server.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: nas_server
+            -
+              uuid: 34994220e56c4059b653d0d0552dd646
+              name: '{#NAME} performance metrics by nas server write_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_nas_server.write_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.write_iops
+              master_item:
+                key: 'powerstore.discovery.metric.nas_server.performance_metrics_by_nas_server.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: nas_server
+          master_item:
+            key: powerstore.resource.nas_server.get
+          lld_macro_paths:
+            -
+              lld_macro: '{#NAME}'
+              path: $.name
+            -
+              lld_macro: '{#ID}'
+              path: $.id
+          preprocessing:
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              parameters:
+                - '3600'
+        -
+          uuid: 8891a3d47fe44f0288c56ac24040a5ec
+          name: 'Discovery node'
+          type: DEPENDENT
+          key: powerstore.resource.node.discovery
+          delay: '0'
+          item_prototypes:
+            -
+              uuid: fe6584d3a2424afd9a99f9d5177c9b5f
+              name: 'Get Node {#ID} performance_metrics_by_node '
+              type: HTTP_AGENT
+              key: 'powerstore.discovery.metric.node.performance_metrics_by_node.metric.[{#ID}]'
+              delay: 5m
+              history: '0'
+              trends: '0'
+              value_type: TEXT
+              authtype: BASIC
+              username: '{$API_USERNAME}'
+              password: '{$API_PASSWORD}'
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[-1]'
+              timeout: 20s
+              url: '{$API_URL}/metrics/generate'
+              posts: '{"entity": "performance_metrics_by_node", "entity_id": "{#ID}", "interval": "Twenty_Sec"}'
+              post_type: JSON
+              request_method: POST
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 67d1eb58402142d3b5646798d2ae022f
+              name: 'Get Node {#ID} performance_metrics_file_by_node '
+              type: HTTP_AGENT
+              key: 'powerstore.discovery.metric.node.performance_metrics_file_by_node.metric.[{#ID}]'
+              delay: 5m
+              history: '0'
+              trends: '0'
+              value_type: TEXT
+              authtype: BASIC
+              username: '{$API_USERNAME}'
+              password: '{$API_PASSWORD}'
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[-1]'
+              timeout: 20s
+              url: '{$API_URL}/metrics/generate'
+              posts: '{"entity": "performance_metrics_file_by_node", "entity_id": "{#ID}", "interval": "Twenty_Sec"}'
+              post_type: JSON
+              request_method: POST
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: bb60d078576249118b7b0ab63352af34
+              name: 'Get Node {#ID} performance_metrics_nfs_by_node '
+              type: HTTP_AGENT
+              key: 'powerstore.discovery.metric.node.performance_metrics_nfs_by_node.metric.[{#ID}]'
+              delay: 5m
+              history: '0'
+              trends: '0'
+              value_type: TEXT
+              authtype: BASIC
+              username: '{$API_USERNAME}'
+              password: '{$API_PASSWORD}'
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[-1]'
+              timeout: 20s
+              url: '{$API_URL}/metrics/generate'
+              posts: '{"entity": "performance_metrics_nfs_by_node", "entity_id": "{#ID}", "interval": "Twenty_Sec"}'
+              post_type: JSON
+              request_method: POST
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: b967f13ef3944f50be38962149233830
+              name: 'Get Node {#ID} performance_metrics_smb_by_node '
+              type: HTTP_AGENT
+              key: 'powerstore.discovery.metric.node.performance_metrics_smb_by_node.metric.[{#ID}]'
+              delay: 5m
+              history: '0'
+              trends: '0'
+              value_type: TEXT
+              authtype: BASIC
+              username: '{$API_USERNAME}'
+              password: '{$API_PASSWORD}'
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[-1]'
+              timeout: 20s
+              url: '{$API_URL}/metrics/generate'
+              posts: '{"entity": "performance_metrics_smb_by_node", "entity_id": "{#ID}", "interval": "Twenty_Sec"}'
+              post_type: JSON
+              request_method: POST
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 48301339e0a1421ba16be71d14a15c64
+              name: '{#ID} performance metrics by node avg_io_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_node.avg_io_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_io_size
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 1aee1aa8245a4fd38f64dd37ec1a3910
+              name: '{#ID} performance metrics by node avg_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_node.avg_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_latency
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: c2102b5b7b724c5c8cbc0ab3b49aad61
+              name: '{#ID} performance metrics by node avg_read_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_node.avg_read_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_read_latency
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: bbdffc5d41044a839e3decfeac2de527
+              name: '{#ID} performance metrics by node avg_read_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_node.avg_read_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_read_size
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 9e645c2e1ffe4ec49f8a4bca71e41f08
+              name: '{#ID} performance metrics by node avg_write_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_node.avg_write_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_write_latency
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 30bd3335ae274b5fa7808bc2a4aaa375
+              name: '{#ID} performance metrics by node avg_write_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_node.avg_write_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_write_size
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 5317c71f5acc43babdb31100568808e0
+              name: '{#ID} performance metrics by node io_workload_cpu_utilization'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_node.io_workload_cpu_utilization.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.io_workload_cpu_utilization
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 0765d6d51f1f42e49233054911427372
+              name: '{#ID} performance metrics by node read_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_node.read_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.read_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 1c6bf7bcc7234bd7bb64995ce74af64c
+              name: '{#ID} performance metrics by node read_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_node.read_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.read_iops
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 12d5e25177924c73ba78c4644e5f6156
+              name: '{#ID} performance metrics by node total_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_node.total_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.total_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: cca3b3db5a154c10a1bd7c1ec692bc28
+              name: '{#ID} performance metrics by node total_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_node.total_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.total_iops
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 8f7994936f6948e9956281854e8663ad
+              name: '{#ID} performance metrics by node write_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_node.write_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.write_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: a736b85f0d07441a9888051d2b7387ce
+              name: '{#ID} performance metrics by node write_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_node.write_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.write_iops
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: f96f60f22af441939808b66e943b50ee
+              name: '{#ID} performance metrics file by node avg_io_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_node.avg_io_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_io_size
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_file_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 38f955a21d124d83a86ad7887e12c9a2
+              name: '{#ID} performance metrics file by node avg_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_node.avg_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_latency
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_file_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: dd20c3fd33d941fcad590d451b999458
+              name: '{#ID} performance metrics file by node avg_read_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_node.avg_read_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_read_latency
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_file_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: c08880e466cc4400b9cd74c3043d223f
+              name: '{#ID} performance metrics file by node avg_read_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_node.avg_read_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_read_size
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_file_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 102531454160461aaa40a578cdc08c54
+              name: '{#ID} performance metrics file by node avg_write_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_node.avg_write_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_write_latency
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_file_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 2f8e02178f0d4331b025b9ae518f6605
+              name: '{#ID} performance metrics file by node avg_write_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_node.avg_write_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_write_size
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_file_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: a4587cd90d92457c8de6389f4d04e609
+              name: '{#ID} performance metrics file by node read_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_node.read_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.read_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_file_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 9831c37b1c74488590f60b4a2784bc2a
+              name: '{#ID} performance metrics file by node read_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_node.read_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.read_iops
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_file_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: fab4082c42f24ae38a0debf9d7b69b1b
+              name: '{#ID} performance metrics file by node total_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_node.total_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.total_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_file_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 49694aae4fb7479a9a019cc6662ecd07
+              name: '{#ID} performance metrics file by node total_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_node.total_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.total_iops
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_file_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 19b32c85e6bb4a4d80098440bc83c416
+              name: '{#ID} performance metrics file by node write_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_node.write_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.write_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_file_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 07cada590d6446838558abc1855766be
+              name: '{#ID} performance metrics file by node write_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_file_by_node.write_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.write_iops
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_file_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 4eecb27a434c4dc7bb359b338ab1f4ad
+              name: '{#ID} performance metrics nfs by node avg_io_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_nfs_by_node.avg_io_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_io_size
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_nfs_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 2c3b3b1136dd49b5bcc840e2ba342d70
+              name: '{#ID} performance metrics nfs by node avg_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_nfs_by_node.avg_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_latency
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_nfs_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: de3bf214ee62439993dd0d7dcac038a6
+              name: '{#ID} performance metrics nfs by node avg_read_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_nfs_by_node.avg_read_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_read_latency
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_nfs_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 90470ba8e945491490f243131e9d0ae3
+              name: '{#ID} performance metrics nfs by node avg_read_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_nfs_by_node.avg_read_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_read_size
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_nfs_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 54f95718e4504efeb9cb7c25fac89e42
+              name: '{#ID} performance metrics nfs by node avg_write_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_nfs_by_node.avg_write_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_write_latency
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_nfs_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 97058c5300c142db836b9f25e752db96
+              name: '{#ID} performance metrics nfs by node avg_write_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_nfs_by_node.avg_write_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_write_size
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_nfs_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: c58cfba8e97e42fc9f43cfb9984c349b
+              name: '{#ID} performance metrics nfs by node read_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_nfs_by_node.read_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.read_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_nfs_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 3971efd2c99341338c7dbef5c08629c9
+              name: '{#ID} performance metrics nfs by node read_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_nfs_by_node.read_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.read_iops
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_nfs_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 1036c4ad23304e13ab03343da54d6b98
+              name: '{#ID} performance metrics nfs by node total_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_nfs_by_node.total_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.total_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_nfs_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 72f603aa71fc4a85a9865e60baab6ccd
+              name: '{#ID} performance metrics nfs by node total_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_nfs_by_node.total_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.total_iops
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_nfs_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 1d5bd81e2e334e9f873331d359fdc942
+              name: '{#ID} performance metrics nfs by node write_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_nfs_by_node.write_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.write_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_nfs_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 54084642dbff49e6af907d89d9f4ba78
+              name: '{#ID} performance metrics nfs by node write_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_nfs_by_node.write_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.write_iops
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_nfs_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: d0d7ea4ad6b94a3b88f2c297dda03850
+              name: '{#ID} performance metrics smb by node avg_io_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_smb_by_node.avg_io_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_io_size
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_smb_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 74a4aa2a7864469e8a72b9a9f637efe4
+              name: '{#ID} performance metrics smb by node avg_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_smb_by_node.avg_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_latency
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_smb_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 5245193fae3e482d8bb6caec0e399dfb
+              name: '{#ID} performance metrics smb by node avg_read_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_smb_by_node.avg_read_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_read_latency
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_smb_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 5f24d39b2b5742d7bde0b659718c19ee
+              name: '{#ID} performance metrics smb by node avg_read_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_smb_by_node.avg_read_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_read_size
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_smb_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 4a691814648041938fb366967557fcd4
+              name: '{#ID} performance metrics smb by node avg_write_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_smb_by_node.avg_write_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_write_latency
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_smb_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: bd14cb6ea7504c268c3b7d375ca0f20e
+              name: '{#ID} performance metrics smb by node avg_write_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_smb_by_node.avg_write_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_write_size
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_smb_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 7f4c076451cc4bb399c8ec6ee8cb10aa
+              name: '{#ID} performance metrics smb by node read_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_smb_by_node.read_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.read_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_smb_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 44ef175fb0fa4e65a986ccd096c97742
+              name: '{#ID} performance metrics smb by node read_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_smb_by_node.read_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.read_iops
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_smb_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: cc3b85b0aac141cbaf3cb69abb74d20b
+              name: '{#ID} performance metrics smb by node total_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_smb_by_node.total_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.total_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_smb_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: f10aefe71e90444caec3f415c2dd59a3
+              name: '{#ID} performance metrics smb by node total_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_smb_by_node.total_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.total_iops
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_smb_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: cdcc8b94fa7949cdb44a46422a5300cc
+              name: '{#ID} performance metrics smb by node write_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_smb_by_node.write_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.write_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_smb_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+            -
+              uuid: 8dc35dfc7dee4019b5885f16c81bd6b2
+              name: '{#ID} performance metrics smb by node write_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_smb_by_node.write_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.write_iops
+              master_item:
+                key: 'powerstore.discovery.metric.node.performance_metrics_smb_by_node.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: node
+          master_item:
+            key: powerstore.resource.node.get
+          lld_macro_paths:
+            -
+              lld_macro: '{#NAME}'
+              path: $.name
+            -
+              lld_macro: '{#ID}'
+              path: $.id
+          preprocessing:
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              parameters:
+                - '3600'
+        -
+          uuid: 8d61a027a0864d4785d19a8ce3698e4c
+          name: 'Discovery volume'
+          type: DEPENDENT
+          key: powerstore.resource.volume.discovery
+          delay: '0'
+          item_prototypes:
+            -
+              uuid: 7c649279b834455da1bf06108d400bb8
+              name: 'Get volume {#NAME} performance_metrics_by_volume'
+              type: HTTP_AGENT
+              key: 'powerstore.discovery.metric.volume.performance_metrics_by_volume.metric.[{#ID}]'
+              delay: 5m
+              history: '0'
+              trends: '0'
+              value_type: TEXT
+              authtype: BASIC
+              username: '{$API_USERNAME}'
+              password: '{$API_PASSWORD}'
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[-1]'
+              timeout: 20s
+              url: '{$API_URL}/metrics/generate'
+              posts: '{"entity": "performance_metrics_by_volume", "entity_id": "{#ID}", "interval": "Twenty_Sec"}'
+              post_type: JSON
+              request_method: POST
+              tags:
+                -
+                  tag: metric
+                  value: volume
+            -
+              uuid: 6394e10486294ab69be77879b7577a5c
+              name: 'Get volume {#NAME} space_metrics_by_volume'
+              type: HTTP_AGENT
+              key: 'powerstore.discovery.metric.volume.space_metrics_by_volume.metric.[{#ID}]'
+              delay: 5m
+              history: '0'
+              trends: '0'
+              value_type: TEXT
+              authtype: BASIC
+              username: '{$API_USERNAME}'
+              password: '{$API_PASSWORD}'
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[-1]'
+              timeout: 20s
+              url: '{$API_URL}/metrics/generate'
+              posts: '{"entity": "space_metrics_by_volume", "entity_id": "{#ID}", "interval": "Five_Mins"}'
+              post_type: JSON
+              request_method: POST
+              tags:
+                -
+                  tag: metric
+                  value: volume
+            -
+              uuid: d0b8a36ccebd429585776dd36f308ee3
+              name: '{#NAME} performance metrics by volume avg_io_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_volume.avg_io_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_io_size
+              master_item:
+                key: 'powerstore.discovery.metric.volume.performance_metrics_by_volume.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume
+            -
+              uuid: c29906c59c984d6abf0ae7fc91898169
+              name: '{#NAME} performance metrics by volume avg_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_volume.avg_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_latency
+              master_item:
+                key: 'powerstore.discovery.metric.volume.performance_metrics_by_volume.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume
+            -
+              uuid: c5235984712c44558c8dc1b27a97c7d7
+              name: '{#NAME} performance metrics by volume avg_read_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_volume.avg_read_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_read_latency
+              master_item:
+                key: 'powerstore.discovery.metric.volume.performance_metrics_by_volume.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume
+            -
+              uuid: e5830bc7d6e04f9f9b2963d141cd6ad6
+              name: '{#NAME} performance metrics by volume avg_read_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_volume.avg_read_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_read_size
+              master_item:
+                key: 'powerstore.discovery.metric.volume.performance_metrics_by_volume.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume
+            -
+              uuid: 877639e9661e4c0abf4a417a1ea67549
+              name: '{#NAME} performance metrics by volume avg_write_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_volume.avg_write_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_write_latency
+              master_item:
+                key: 'powerstore.discovery.metric.volume.performance_metrics_by_volume.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume
+            -
+              uuid: 3bb2d8aabdcc48dbadaf6783706a4741
+              name: '{#NAME} performance metrics by volume avg_write_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_volume.avg_write_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_write_size
+              master_item:
+                key: 'powerstore.discovery.metric.volume.performance_metrics_by_volume.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume
+            -
+              uuid: f1b921cd20e54066b5c7a52e51b495dc
+              name: '{#NAME} performance metrics by volume read_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_volume.read_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.read_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.volume.performance_metrics_by_volume.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume
+            -
+              uuid: 38a1b9480b8c41e480b508537a94cad9
+              name: '{#NAME} performance metrics by volume read_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_volume.read_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.read_iops
+              master_item:
+                key: 'powerstore.discovery.metric.volume.performance_metrics_by_volume.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume
+            -
+              uuid: 9f2281c3c01944ad8090bac42e16480c
+              name: '{#NAME} performance metrics by volume total_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_volume.total_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.total_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.volume.performance_metrics_by_volume.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume
+            -
+              uuid: 435e1eb35d0e488bb2cefe5e226b5ca6
+              name: '{#NAME} performance metrics by volume total_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_volume.total_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.total_iops
+              master_item:
+                key: 'powerstore.discovery.metric.volume.performance_metrics_by_volume.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume
+            -
+              uuid: 7dc4139932314c36bdd4eb67d7e6af3e
+              name: '{#NAME} performance metrics by volume write_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_volume.write_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.write_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.volume.performance_metrics_by_volume.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume
+            -
+              uuid: a3ef1f06101c47dc80f3075be7dd0e35
+              name: '{#NAME} performance metrics by volume write_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_volume.write_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.write_iops
+              master_item:
+                key: 'powerstore.discovery.metric.volume.performance_metrics_by_volume.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume
+            -
+              uuid: 8300fea12d6f47bba3b9a25af7b0e7b4
+              name: '{#NAME} space metrics by volume free'
+              type: CALCULATED
+              key: 'powerstore.resource.space_metrics_by_volume.logical_free.metric.[{#ID}]'
+              delay: 5m
+              value_type: FLOAT
+              params: 'avg(//powerstore.resource.space_metrics_by_volume.logical_provisioned.metric.[{#ID}], 8m) - avg(//powerstore.resource.space_metrics_by_volume.logical_used.metric.[{#ID}], 8m)'
+              tags:
+                -
+                  tag: metric
+                  value: volume
+            -
+              uuid: c34aadfba9d746e9808a99fa25228239
+              name: '{#NAME} space metrics by volume logical_provisioned'
+              type: DEPENDENT
+              key: 'powerstore.resource.space_metrics_by_volume.logical_provisioned.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.logical_provisioned
+              master_item:
+                key: 'powerstore.discovery.metric.volume.space_metrics_by_volume.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume
+            -
+              uuid: 9bff5b9abf7c41ec959d8d635b4b2a56
+              name: '{#NAME} space metrics by volume logical_used'
+              type: DEPENDENT
+              key: 'powerstore.resource.space_metrics_by_volume.logical_used.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.logical_used
+              master_item:
+                key: 'powerstore.discovery.metric.volume.space_metrics_by_volume.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume
+            -
+              uuid: 41677e0766614fcb862431d74471bdd0
+              name: '{#NAME} space metrics by volume thin_savings'
+              type: DEPENDENT
+              key: 'powerstore.resource.space_metrics_by_volume.thin_savings.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.thin_savings
+              master_item:
+                key: 'powerstore.discovery.metric.volume.space_metrics_by_volume.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume
+          master_item:
+            key: powerstore.resource.volume.get
+          lld_macro_paths:
+            -
+              lld_macro: '{#NAME}'
+              path: $.name
+            -
+              lld_macro: '{#ID}'
+              path: $.id
+          preprocessing:
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              parameters:
+                - '3600'
+        -
+          uuid: 94d8e536cb584615b866a08adaca03f7
+          name: 'Discovery volume_group'
+          type: DEPENDENT
+          key: powerstore.resource.volume_group.discovery
+          delay: '0'
+          item_prototypes:
+            -
+              uuid: 0810581af8f04f32bd0b48e8668e6a41
+              name: 'Get volume_group {#NAME} performance_metrics_by_vg'
+              type: HTTP_AGENT
+              key: 'powerstore.discovery.metric.volume_group.performance_metrics_by_vg.metric.[{#ID}]'
+              delay: 5m
+              history: '0'
+              trends: '0'
+              value_type: TEXT
+              authtype: BASIC
+              username: '{$API_USERNAME}'
+              password: '{$API_PASSWORD}'
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[-1]'
+              timeout: 20s
+              url: '{$API_URL}/metrics/generate'
+              posts: '{"entity": "performance_metrics_by_vg", "entity_id": "{#ID}", "interval": "Twenty_Sec"}'
+              post_type: JSON
+              request_method: POST
+              tags:
+                -
+                  tag: metric
+                  value: volume_group
+            -
+              uuid: 1b03ffdb42ff4da482be9ef83b2259d7
+              name: 'Get volume_group {#NAME} space_metrics_by_vg'
+              type: HTTP_AGENT
+              key: 'powerstore.discovery.metric.volume_group.space_metrics_by_vg.metric.[{#ID}]'
+              delay: 5m
+              history: '0'
+              trends: '0'
+              value_type: TEXT
+              authtype: BASIC
+              username: '{$API_USERNAME}'
+              password: '{$API_PASSWORD}'
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$[-1]'
+              timeout: 20s
+              url: '{$API_URL}/metrics/generate'
+              posts: '{"entity": "space_metrics_by_vg", "entity_id": "{#ID}", "interval": "Five_Mins"}'
+              post_type: JSON
+              request_method: POST
+              tags:
+                -
+                  tag: metric
+                  value: volume_group
+            -
+              uuid: 5e75478697e44022990764a3c22f95e7
+              name: '{#NAME} performance metrics by vg avg_io_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_vg.avg_io_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_io_size
+              master_item:
+                key: 'powerstore.discovery.metric.volume_group.performance_metrics_by_vg.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume_group
+            -
+              uuid: d16ba3c4f3ff49ba97100c3aa3cca537
+              name: '{#NAME} performance metrics by vg avg_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_vg.avg_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_latency
+              master_item:
+                key: 'powerstore.discovery.metric.volume_group.performance_metrics_by_vg.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume_group
+            -
+              uuid: f87f5259e1984939b2c40ca5d3492d3e
+              name: '{#NAME} performance metrics by vg avg_read_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_vg.avg_read_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_read_latency
+              master_item:
+                key: 'powerstore.discovery.metric.volume_group.performance_metrics_by_vg.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume_group
+            -
+              uuid: 68b6801eacc647e7957e20e5a4ef3682
+              name: '{#NAME} performance metrics by vg avg_read_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_vg.avg_read_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_read_size
+              master_item:
+                key: 'powerstore.discovery.metric.volume_group.performance_metrics_by_vg.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume_group
+            -
+              uuid: 7d057a579436453d8ba7948053d5bdca
+              name: '{#NAME} performance metrics by vg avg_write_latency'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_vg.avg_write_latency.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_write_latency
+              master_item:
+                key: 'powerstore.discovery.metric.volume_group.performance_metrics_by_vg.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume_group
+            -
+              uuid: 6a9b51d3c02844b69415698be6e73792
+              name: '{#NAME} performance metrics by vg avg_write_size'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_vg.avg_write_size.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.avg_write_size
+              master_item:
+                key: 'powerstore.discovery.metric.volume_group.performance_metrics_by_vg.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume_group
+            -
+              uuid: 9b40293a98664e7095016eec43fcaf9f
+              name: '{#NAME} performance metrics by vg read_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_vg.read_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.read_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.volume_group.performance_metrics_by_vg.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume_group
+            -
+              uuid: 93b5d44087594ad7b7af99f27d1c4cf3
+              name: '{#NAME} performance metrics by vg read_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_vg.read_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.read_iops
+              master_item:
+                key: 'powerstore.discovery.metric.volume_group.performance_metrics_by_vg.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume_group
+            -
+              uuid: 1e770b672c6b4237a0ba59c15b404198
+              name: '{#NAME} performance metrics by vg total_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_vg.total_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.total_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.volume_group.performance_metrics_by_vg.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume_group
+            -
+              uuid: 14aa47379d6f468a89321d801f126f0d
+              name: '{#NAME} performance metrics by vg total_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_vg.total_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.total_iops
+              master_item:
+                key: 'powerstore.discovery.metric.volume_group.performance_metrics_by_vg.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume_group
+            -
+              uuid: 5c4a792a43cf48d2999204e4fea5557e
+              name: '{#NAME} performance metrics by vg write_bandwidth'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_vg.write_bandwidth.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.write_bandwidth
+              master_item:
+                key: 'powerstore.discovery.metric.volume_group.performance_metrics_by_vg.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume_group
+            -
+              uuid: 80d1a65097e543ec84d4ab062388efa9
+              name: '{#NAME} performance metrics by vg write_iops'
+              type: DEPENDENT
+              key: 'powerstore.resource.performance_metrics_by_vg.write_iops.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.write_iops
+              master_item:
+                key: 'powerstore.discovery.metric.volume_group.performance_metrics_by_vg.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume_group
+            -
+              uuid: 3268f21e5cc54d27818ecf0031a8a05f
+              name: '{#NAME} space metrics by vg logical_provisioned'
+              type: DEPENDENT
+              key: 'powerstore.resource.space_metrics_by_vg.logical_provisioned.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.logical_provisioned
+              master_item:
+                key: 'powerstore.discovery.metric.volume_group.space_metrics_by_vg.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume_group
+            -
+              uuid: 1b092e76bee7464bb698501b748cabe0
+              name: '{#NAME} space metrics by vg logical_used'
+              type: DEPENDENT
+              key: 'powerstore.resource.space_metrics_by_vg.logical_used.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.logical_used
+              master_item:
+                key: 'powerstore.discovery.metric.volume_group.space_metrics_by_vg.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume_group
+            -
+              uuid: bb4abdc236244b10b51d87f11e91d21b
+              name: '{#NAME} space metrics by vg thin_savings'
+              type: DEPENDENT
+              key: 'powerstore.resource.space_metrics_by_vg.thin_savings.metric.[{#ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - $.thin_savings
+              master_item:
+                key: 'powerstore.discovery.metric.volume_group.space_metrics_by_vg.metric.[{#ID}]'
+              tags:
+                -
+                  tag: metric
+                  value: volume_group
+          master_item:
+            key: powerstore.resource.volume_group.get
+          lld_macro_paths:
+            -
+              lld_macro: '{#NAME}'
+              path: $.name
+            -
+              lld_macro: '{#ID}'
+              path: $.id
+          preprocessing:
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              parameters:
+                - '3600'
+      macros:
+        -
+          macro: '{$API_PASSWORD}'
+        -
+          macro: '{$API_URL}'
+        -
+          macro: '{$API_USERNAME}'
+    -
+      uuid: c45099ee708f4e88998e0f343c31e770
+      template: 'Template PowerStore Cluster'
+      name: 'Template PowerStore Cluster'
+      groups:
+        -
+          name: PowerStore
+      discovery_rules:
+        -
+          uuid: 8b80c12970da4d09b87f526baf7f35e1
+          name: 'PowerStore cluster discovery appliance'
+          type: HTTP_AGENT
+          key: powerstore.discovery.appliance
+          authtype: BASIC
+          username: '{$API_USERNAME}'
+          password: '{$API_PASSWORD}'
+          host_prototypes:
+            -
+              uuid: bee4ceccec724be792ce9f176097a1b1
+              host: 'Discovered appliance {#NAME}'
+              name: 'Discovered appliance {#NAME}'
+              group_links:
+                -
+                  group:
+                    name: PowerStore
+              group_prototypes:
+                -
+                  name: '{#CLUSTER_NAME}-{#NAME}'
+              templates:
+                -
+                  name: 'Template PowerStore Appliance'
+              macros:
+                -
+                  macro: '{$APPLIANCE_ID}'
+                  value: '{#ID}'
+              tags:
+                -
+                  tag: cluster
+                  value: '{#CLUSTER_NAME}'
+          url: '{$API_URL}/appliance'
+          query_fields:
+            -
+              name: select
+              value: 'id,name'
+          lld_macro_paths:
+            -
+              lld_macro: '{#CLUSTER_NAME}'
+              path: $.cluster_name
+            -
+              lld_macro: '{#NAME}'
+              path: $.name
+            -
+              lld_macro: '{#ID}'
+              path: $.id
+          preprocessing:
+            -
+              type: JAVASCRIPT
+              parameters:
+                - |
+                  function request(url, params, body) {
+                      api_request = new HttpRequest();
+                      api_request.addHeader('Authorization: Basic ' + btoa(params.user + ':' + params.password));
+                      api_request.addHeader('Content-Type: application/json');
+                      // Zabbix.log(4, '[ PowerStore ] Sending request: ' + url);
+                      // Zabbix.log(4, '[ PowerStore ] request body: ' + JSON.stringify(body))
+                  
+                      try {
+                          response = api_request.get(url);
+                      } catch (error) {
+                          Zabbix.log(2, '[ PowerStore ] Get request returned error ' + error);
+                          throw 'Get request returned error ' + error + '. Check debug log for more information.';
+                      }
+                  
+                      if (api_request.getStatus() !== 200) {
+                          var message = 'Request failed with status code ' + api_request.getStatus();
+                          if (response !== null) {
+                              if (typeof response.message === 'string') {
+                                  message += ': ' + response.message;
+                              }
+                          }
+                          Zabbix.log(2, response.message)
+                  
+                          throw message + ' Check debug log for more information.';
+                      }
+                  
+                      if (response !== null) {
+                          try {
+                              response = JSON.parse(response);
+                          }
+                          catch (error) {
+                              Zabbix.log(2, '[ PowerStore ] Failed to parse response.');
+                              response = null;
+                          }
+                      }
+                  
+                      return {
+                          status: api_request.getStatus(),
+                          body: response
+                      };
+                  }
+                  
+                  try {
+                      objects = JSON.parse(value);
+                  }
+                  catch (error) {
+                      Zabbix.log(2, '[ PowerStore ] Failed to parse input value.');
+                      objects = [];
+                      throw 'Failed to parse input value. ' + error + '. Check debug log for more information.';
+                  }
+                  
+                  var params = {
+                      url: '{$API_URL}',
+                      user: '{$API_USERNAME}',
+                      password: '{$API_PASSWORD}'
+                  };
+                  
+                  
+                  response = request(params.url + '/cluster?select=id,name', params);
+                  cluster = response.body;
+                  // last_metric = cluster[metrics.length - 1]
+                  
+                  var result = [];
+                  objects.forEach(function(object) {
+                      object['cluster_name'] = cluster[0].name
+                      result.push(object)
+                  });
+                  
+                  return JSON.stringify(result);
+                  
+                                  
+            -
+              type: DISCARD_UNCHANGED_HEARTBEAT
+              parameters:
+                - '3600'
+      macros:
+        -
+          macro: '{$API_PASSWORD}'
+          value: '<Put your password here>'
+          description: 'PowerStore user password'
+        -
+          macro: '{$API_URL}'
+          value: 'https://<cluster mgmt IP>/api/rest'
+          description: 'PowerStore REST API address'
+        -
+          macro: '{$API_USERNAME}'
+          value: '<Put your username here>'
+          description: 'PowerStore user name'

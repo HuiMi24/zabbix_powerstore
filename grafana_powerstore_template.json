@@ -1,0 +1,6516 @@
+{
+    "__inputs": [
+      {
+        "name": "DS_ZABBIX",
+        "label": "Zabbix",
+        "description": "",
+        "type": "datasource",
+        "pluginId": "alexanderzobnin-zabbix-datasource",
+        "pluginName": "Zabbix"
+      }
+    ],
+    "__elements": {},
+    "__requires": [
+      {
+        "type": "datasource",
+        "id": "alexanderzobnin-zabbix-datasource",
+        "name": "Zabbix",
+        "version": "1.0.0"
+      },
+      {
+        "type": "panel",
+        "id": "alexanderzobnin-zabbix-triggers-panel",
+        "name": "Zabbix Problems",
+        "version": ""
+      },
+      {
+        "type": "panel",
+        "id": "bargauge",
+        "name": "Bar gauge",
+        "version": ""
+      },
+      {
+        "type": "panel",
+        "id": "gauge",
+        "name": "Gauge",
+        "version": ""
+      },
+      {
+        "type": "grafana",
+        "id": "grafana",
+        "name": "Grafana",
+        "version": "9.4.7"
+      },
+      {
+        "type": "panel",
+        "id": "piechart",
+        "name": "Pie chart",
+        "version": ""
+      },
+      {
+        "type": "panel",
+        "id": "stat",
+        "name": "Stat",
+        "version": ""
+      },
+      {
+        "type": "panel",
+        "id": "table",
+        "name": "Table",
+        "version": ""
+      },
+      {
+        "type": "panel",
+        "id": "timeseries",
+        "name": "Time series",
+        "version": ""
+      }
+    ],
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": null,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "collapsed": false,
+        "datasource": {
+          "type": "alexanderzobnin-zabbix-datasource",
+          "uid": "tgY0YwS4k"
+        },
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 14,
+        "panels": [],
+        "targets": [
+          {
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "tgY0YwS4k"
+            },
+            "refId": "A"
+          }
+        ],
+        "title": "Appliance Overview",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "alexanderzobnin-zabbix-datasource",
+          "uid": "${DS_ZABBIX}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "max": 1,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "percentunit"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 2,
+          "x": 0,
+          "y": 1
+        },
+        "id": 7,
+        "options": {
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "text": {}
+        },
+        "pluginVersion": "9.4.7",
+        "targets": [
+          {
+            "application": {
+              "filter": ""
+            },
+            "countTriggersBy": "",
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "functions": [],
+            "group": {
+              "filter": "$group"
+            },
+            "host": {
+              "filter": "$appliance"
+            },
+            "item": {
+              "filter": "/.* performance metrics by appliance io_workload_cpu_utilization/"
+            },
+            "itemTag": {
+              "filter": "metric: appliance"
+            },
+            "macro": {
+              "filter": ""
+            },
+            "options": {
+              "count": true,
+              "disableDataAlignment": false,
+              "minSeverity": 3,
+              "showDisabledItems": false,
+              "skipEmptyValues": false,
+              "useTrends": "default",
+              "useZabbixValueMapping": false
+            },
+            "proxy": {
+              "filter": ""
+            },
+            "queryType": "0",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "schema": 12,
+            "table": {
+              "skipEmptyValues": false
+            },
+            "tags": {
+              "filter": ""
+            },
+            "textFilter": "",
+            "trigger": {
+              "filter": ""
+            },
+            "triggers": {
+              "acknowledged": 2
+            }
+          }
+        ],
+        "title": "Appliance CPU",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "alexanderzobnin-zabbix-datasource",
+          "uid": "${DS_ZABBIX}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 2,
+          "x": 2,
+          "y": 1
+        },
+        "id": 79,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "textMode": "auto"
+        },
+        "pluginVersion": "9.4.7",
+        "targets": [
+          {
+            "application": {
+              "filter": ""
+            },
+            "countTriggersBy": "",
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "functions": [],
+            "group": {
+              "filter": "$group"
+            },
+            "hide": false,
+            "host": {
+              "filter": "$appliance"
+            },
+            "item": {
+              "filter": "/.* space metrics by appliance data_reduction/"
+            },
+            "itemTag": {
+              "filter": "metric: appliance"
+            },
+            "macro": {
+              "filter": ""
+            },
+            "options": {
+              "count": false,
+              "disableDataAlignment": false,
+              "showDisabledItems": false,
+              "skipEmptyValues": false,
+              "useTrends": "default",
+              "useZabbixValueMapping": false
+            },
+            "proxy": {
+              "filter": ""
+            },
+            "queryType": "0",
+            "refId": "B",
+            "resultFormat": "time_series",
+            "schema": 12,
+            "table": {
+              "skipEmptyValues": false
+            },
+            "tags": {
+              "filter": ""
+            },
+            "textFilter": "",
+            "trigger": {
+              "filter": ""
+            }
+          }
+        ],
+        "title": "Data reduction",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "alexanderzobnin-zabbix-datasource",
+          "uid": "${DS_ZABBIX}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": [],
+            "unit": "bits"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 3,
+          "x": 4,
+          "y": 1
+        },
+        "id": 56,
+        "options": {
+          "displayLabels": [
+            "percent",
+            "name"
+          ],
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true,
+            "values": [
+              "percent"
+            ]
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "pluginVersion": "9.2.1",
+        "targets": [
+          {
+            "application": {
+              "filter": ""
+            },
+            "countTriggersBy": "",
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "functions": [
+              {
+                "added": true,
+                "def": {
+                  "category": "Alias",
+                  "defaultParams": [],
+                  "name": "setAlias",
+                  "params": [
+                    {
+                      "name": "alias",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "params": [
+                  "Free Physical Space"
+                ],
+                "text": "setAlias()"
+              }
+            ],
+            "group": {
+              "filter": "$group"
+            },
+            "hide": false,
+            "host": {
+              "filter": "$appliance"
+            },
+            "item": {
+              "filter": "/.* space metrics by appliance physical_free/"
+            },
+            "itemTag": {
+              "filter": "metric: appliance"
+            },
+            "macro": {
+              "filter": ""
+            },
+            "options": {
+              "count": true,
+              "disableDataAlignment": false,
+              "minSeverity": 3,
+              "showDisabledItems": false,
+              "skipEmptyValues": false,
+              "useTrends": "true",
+              "useZabbixValueMapping": false
+            },
+            "proxy": {
+              "filter": ""
+            },
+            "queryType": "0",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "schema": 12,
+            "table": {
+              "skipEmptyValues": false
+            },
+            "tags": {
+              "filter": ""
+            },
+            "textFilter": "",
+            "trigger": {
+              "filter": ""
+            },
+            "triggers": {
+              "acknowledged": 2
+            }
+          },
+          {
+            "application": {
+              "filter": ""
+            },
+            "countTriggersBy": "",
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "functions": [
+              {
+                "added": true,
+                "def": {
+                  "category": "Alias",
+                  "defaultParams": [],
+                  "name": "setAlias",
+                  "params": [
+                    {
+                      "name": "alias",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "params": [
+                  "Used Physical Space"
+                ],
+                "text": "setAlias()"
+              }
+            ],
+            "group": {
+              "filter": "$group"
+            },
+            "hide": false,
+            "host": {
+              "filter": "$appliance"
+            },
+            "item": {
+              "filter": "/.* space metrics by appliance physical_used/"
+            },
+            "itemTag": {
+              "filter": "metric: appliance"
+            },
+            "macro": {
+              "filter": ""
+            },
+            "options": {
+              "count": true,
+              "disableDataAlignment": false,
+              "minSeverity": 3,
+              "showDisabledItems": false,
+              "skipEmptyValues": false,
+              "useTrends": "true",
+              "useZabbixValueMapping": false
+            },
+            "proxy": {
+              "filter": ""
+            },
+            "queryType": "0",
+            "refId": "B",
+            "resultFormat": "time_series",
+            "schema": 12,
+            "table": {
+              "skipEmptyValues": false
+            },
+            "tags": {
+              "filter": ""
+            },
+            "textFilter": "",
+            "trigger": {
+              "filter": ""
+            },
+            "triggers": {
+              "acknowledged": 2
+            }
+          }
+        ],
+        "title": "Physical space usage",
+        "type": "piechart"
+      },
+      {
+        "datasource": {
+          "type": "alexanderzobnin-zabbix-datasource",
+          "uid": "${DS_ZABBIX}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 2,
+          "x": 7,
+          "y": 1
+        },
+        "id": 59,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "textMode": "auto"
+        },
+        "pluginVersion": "9.4.7",
+        "targets": [
+          {
+            "application": {
+              "filter": ""
+            },
+            "countTriggersBy": "",
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "functions": [],
+            "group": {
+              "filter": "$group"
+            },
+            "host": {
+              "filter": "$appliance"
+            },
+            "item": {
+              "filter": "Number of volume"
+            },
+            "itemTag": {
+              "filter": "resource: volume"
+            },
+            "macro": {
+              "filter": ""
+            },
+            "options": {
+              "count": false,
+              "disableDataAlignment": false,
+              "showDisabledItems": false,
+              "skipEmptyValues": false,
+              "useTrends": "default",
+              "useZabbixValueMapping": false
+            },
+            "proxy": {
+              "filter": ""
+            },
+            "queryType": "0",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "schema": 12,
+            "table": {
+              "skipEmptyValues": false
+            },
+            "tags": {
+              "filter": ""
+            },
+            "textFilter": "",
+            "trigger": {
+              "filter": ""
+            }
+          }
+        ],
+        "title": "Number of volume",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "alexanderzobnin-zabbix-datasource",
+          "uid": "${DS_ZABBIX}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 2,
+          "x": 9,
+          "y": 1
+        },
+        "id": 60,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "textMode": "auto"
+        },
+        "pluginVersion": "9.4.7",
+        "targets": [
+          {
+            "application": {
+              "filter": ""
+            },
+            "countTriggersBy": "",
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "functions": [],
+            "group": {
+              "filter": "$group"
+            },
+            "host": {
+              "filter": "$appliance"
+            },
+            "item": {
+              "filter": "Number of host"
+            },
+            "itemTag": {
+              "filter": "resource: host"
+            },
+            "macro": {
+              "filter": ""
+            },
+            "options": {
+              "count": false,
+              "disableDataAlignment": false,
+              "showDisabledItems": false,
+              "skipEmptyValues": false,
+              "useTrends": "default",
+              "useZabbixValueMapping": false
+            },
+            "proxy": {
+              "filter": ""
+            },
+            "queryType": "0",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "schema": 12,
+            "table": {
+              "skipEmptyValues": false
+            },
+            "tags": {
+              "filter": ""
+            },
+            "textFilter": "",
+            "trigger": {
+              "filter": ""
+            }
+          }
+        ],
+        "title": "Number of host",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "alexanderzobnin-zabbix-datasource",
+          "uid": "${DS_ZABBIX}"
+        },
+        "description": "Number of NAS Server",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 2,
+          "x": 11,
+          "y": 1
+        },
+        "id": 68,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "last"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "textMode": "auto"
+        },
+        "pluginVersion": "9.4.7",
+        "targets": [
+          {
+            "application": {
+              "filter": ""
+            },
+            "countTriggersBy": "",
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "functions": [],
+            "group": {
+              "filter": "$group"
+            },
+            "host": {
+              "filter": "$appliance"
+            },
+            "item": {
+              "filter": "Number of nas_server"
+            },
+            "itemTag": {
+              "filter": "resource: nas_server"
+            },
+            "macro": {
+              "filter": ""
+            },
+            "options": {
+              "count": false,
+              "disableDataAlignment": false,
+              "showDisabledItems": false,
+              "skipEmptyValues": false,
+              "useTrends": "default",
+              "useZabbixValueMapping": false
+            },
+            "proxy": {
+              "filter": ""
+            },
+            "queryType": "0",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "schema": 12,
+            "table": {
+              "skipEmptyValues": false
+            },
+            "tags": {
+              "filter": ""
+            },
+            "textFilter": "",
+            "trigger": {
+              "filter": ""
+            }
+          }
+        ],
+        "title": "Number of NAS Server",
+        "type": "stat"
+      },
+      {
+        "ackEventColor": "rgb(56, 219, 156)",
+        "ackField": false,
+        "ageField": false,
+        "customLastChangeFormat": false,
+        "datasource": {
+          "type": "alexanderzobnin-zabbix-datasource",
+          "uid": "${DS_ZABBIX}"
+        },
+        "descriptionAtNewLine": false,
+        "descriptionField": true,
+        "fontSize": "90%",
+        "gridPos": {
+          "h": 8,
+          "w": 11,
+          "x": 13,
+          "y": 1
+        },
+        "highlightBackground": false,
+        "highlightNewEvents": false,
+        "highlightNewerThan": "1h",
+        "hostField": true,
+        "hostGroups": false,
+        "hostProxy": false,
+        "hostTechNameField": false,
+        "id": 36,
+        "lastChangeFormat": "",
+        "layout": "table",
+        "markAckEvents": false,
+        "okEventColor": "rgb(56, 189, 113)",
+        "options": {
+          "ackEventColor": "rgb(56, 219, 156)",
+          "ackField": false,
+          "ageField": false,
+          "allowDangerousHTML": false,
+          "customLastChangeFormat": false,
+          "descriptionAtNewLine": false,
+          "descriptionField": true,
+          "fontSize": "90%",
+          "highlightBackground": false,
+          "highlightNewEvents": false,
+          "highlightNewerThan": "1h",
+          "hostField": true,
+          "hostGroups": false,
+          "hostProxy": false,
+          "hostTechNameField": false,
+          "lastChangeFormat": "",
+          "layout": "table",
+          "markAckEvents": false,
+          "okEventColor": "rgb(56, 189, 113)",
+          "opdataField": false,
+          "pageSize": 10,
+          "problemTimeline": true,
+          "resizedColumns": [],
+          "severityField": true,
+          "showTags": false,
+          "sortProblems": "lastchange",
+          "statusField": true,
+          "statusIcon": false,
+          "triggerSeverity": [
+            {
+              "$$hashKey": "object:1418",
+              "color": "rgb(108, 108, 108)",
+              "priority": 0,
+              "severity": "Not classified",
+              "show": true
+            },
+            {
+              "$$hashKey": "object:1419",
+              "color": "rgb(120, 158, 183)",
+              "priority": 1,
+              "severity": "Information",
+              "show": true
+            },
+            {
+              "$$hashKey": "object:1420",
+              "color": "rgb(175, 180, 36)",
+              "priority": 2,
+              "severity": "Warning",
+              "show": true
+            },
+            {
+              "$$hashKey": "object:1421",
+              "color": "rgb(255, 137, 30)",
+              "priority": 3,
+              "severity": "Average",
+              "show": true
+            },
+            {
+              "$$hashKey": "object:1422",
+              "color": "rgb(255, 101, 72)",
+              "priority": 4,
+              "severity": "High",
+              "show": true
+            },
+            {
+              "$$hashKey": "object:1423",
+              "color": "rgb(215, 0, 0)",
+              "priority": 5,
+              "severity": "Disaster",
+              "show": true
+            }
+          ]
+        },
+        "pageSize": 10,
+        "pluginVersion": "9.4.7",
+        "problemTimeline": true,
+        "resizedColumns": [],
+        "schemaVersion": 8,
+        "severityField": true,
+        "showTags": false,
+        "sortProblems": "lastchange",
+        "statusField": true,
+        "statusIcon": false,
+        "targets": [
+          {
+            "application": {
+              "filter": ""
+            },
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "functions": [],
+            "group": {
+              "filter": "$cluster"
+            },
+            "host": {
+              "filter": "$host"
+            },
+            "item": {
+              "filter": ""
+            },
+            "itemTag": {
+              "filter": "/.*/"
+            },
+            "options": {
+              "acknowledged": 2,
+              "disableDataAlignment": false,
+              "hostProxy": false,
+              "hostsInMaintenance": false,
+              "limit": 1001,
+              "minSeverity": 0,
+              "showDisabledItems": false,
+              "skipEmptyValues": false,
+              "sortProblems": "default",
+              "useZabbixValueMapping": false
+            },
+            "proxy": {
+              "filter": ""
+            },
+            "queryType": "5",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "showProblems": "problems",
+            "table": {
+              "skipEmptyValues": false
+            },
+            "tags": {
+              "filter": ""
+            },
+            "trigger": {
+              "filter": ""
+            },
+            "triggers": {
+              "acknowledged": 2,
+              "count": true,
+              "minSeverity": 3
+            }
+          }
+        ],
+        "title": "Problem",
+        "triggerSeverity": [
+          {
+            "$$hashKey": "object:1418",
+            "color": "rgb(108, 108, 108)",
+            "priority": 0,
+            "severity": "Not classified",
+            "show": true
+          },
+          {
+            "$$hashKey": "object:1419",
+            "color": "rgb(120, 158, 183)",
+            "priority": 1,
+            "severity": "Information",
+            "show": true
+          },
+          {
+            "$$hashKey": "object:1420",
+            "color": "rgb(175, 180, 36)",
+            "priority": 2,
+            "severity": "Warning",
+            "show": true
+          },
+          {
+            "$$hashKey": "object:1421",
+            "color": "rgb(255, 137, 30)",
+            "priority": 3,
+            "severity": "Average",
+            "show": true
+          },
+          {
+            "$$hashKey": "object:1422",
+            "color": "rgb(255, 101, 72)",
+            "priority": 4,
+            "severity": "High",
+            "show": true
+          },
+          {
+            "$$hashKey": "object:1423",
+            "color": "rgb(215, 0, 0)",
+            "priority": 5,
+            "severity": "Disaster",
+            "show": true
+          }
+        ],
+        "type": "alexanderzobnin-zabbix-triggers-panel"
+      },
+      {
+        "datasource": {
+          "type": "alexanderzobnin-zabbix-datasource",
+          "uid": "${DS_ZABBIX}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "light-blue",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 2,
+          "x": 0,
+          "y": 5
+        },
+        "id": 6,
+        "options": {
+          "colorMode": "background",
+          "graphMode": "area",
+          "justifyMode": "center",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "/^model$/",
+            "values": false
+          },
+          "text": {},
+          "textMode": "auto"
+        },
+        "pluginVersion": "9.4.7",
+        "targets": [
+          {
+            "application": {
+              "filter": ""
+            },
+            "countTriggersBy": "",
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "functions": [],
+            "group": {
+              "filter": "/.*/"
+            },
+            "host": {
+              "filter": "$appliance"
+            },
+            "item": {
+              "filter": "model"
+            },
+            "itemTag": {
+              "filter": "resource: appliance"
+            },
+            "macro": {
+              "filter": ""
+            },
+            "options": {
+              "acknowledged": 2,
+              "count": true,
+              "disableDataAlignment": false,
+              "hostProxy": false,
+              "hostsInMaintenance": false,
+              "limit": 1001,
+              "minSeverity": 3,
+              "showDisabledItems": false,
+              "skipEmptyValues": false,
+              "sortProblems": "default",
+              "useTrends": "default",
+              "useZabbixValueMapping": false
+            },
+            "proxy": {
+              "filter": ""
+            },
+            "queryType": "2",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "schema": 12,
+            "showProblems": "problems",
+            "table": {
+              "skipEmptyValues": false
+            },
+            "tags": {
+              "filter": ""
+            },
+            "textFilter": "",
+            "trigger": {
+              "filter": ""
+            },
+            "triggers": {
+              "acknowledged": 2
+            }
+          }
+        ],
+        "title": "Model",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "alexanderzobnin-zabbix-datasource",
+          "uid": "${DS_ZABBIX}"
+        },
+        "description": "Number of volume group",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 2,
+          "x": 7,
+          "y": 5
+        },
+        "id": 62,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "textMode": "auto"
+        },
+        "pluginVersion": "9.4.7",
+        "targets": [
+          {
+            "application": {
+              "filter": ""
+            },
+            "countTriggersBy": "",
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "functions": [],
+            "group": {
+              "filter": "$group"
+            },
+            "host": {
+              "filter": "$appliance"
+            },
+            "item": {
+              "filter": "Number of volume_group"
+            },
+            "itemTag": {
+              "filter": "resource: volume_group"
+            },
+            "macro": {
+              "filter": ""
+            },
+            "options": {
+              "count": false,
+              "disableDataAlignment": false,
+              "showDisabledItems": false,
+              "skipEmptyValues": false,
+              "useTrends": "default",
+              "useZabbixValueMapping": false
+            },
+            "proxy": {
+              "filter": ""
+            },
+            "queryType": "0",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "schema": 12,
+            "table": {
+              "skipEmptyValues": false
+            },
+            "tags": {
+              "filter": ""
+            },
+            "textFilter": "",
+            "trigger": {
+              "filter": ""
+            }
+          }
+        ],
+        "title": "Number of VG",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "alexanderzobnin-zabbix-datasource",
+          "uid": "${DS_ZABBIX}"
+        },
+        "description": "Number of host group",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 2,
+          "x": 9,
+          "y": 5
+        },
+        "id": 61,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "textMode": "auto"
+        },
+        "pluginVersion": "9.4.7",
+        "targets": [
+          {
+            "application": {
+              "filter": ""
+            },
+            "countTriggersBy": "",
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "functions": [],
+            "group": {
+              "filter": "$group"
+            },
+            "host": {
+              "filter": "$appliance"
+            },
+            "item": {
+              "filter": "Number of host_group"
+            },
+            "itemTag": {
+              "filter": "resource: host_group"
+            },
+            "macro": {
+              "filter": ""
+            },
+            "options": {
+              "count": false,
+              "disableDataAlignment": false,
+              "showDisabledItems": false,
+              "skipEmptyValues": false,
+              "useTrends": "default",
+              "useZabbixValueMapping": false
+            },
+            "proxy": {
+              "filter": ""
+            },
+            "queryType": "0",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "schema": 12,
+            "table": {
+              "skipEmptyValues": false
+            },
+            "tags": {
+              "filter": ""
+            },
+            "textFilter": "",
+            "trigger": {
+              "filter": ""
+            }
+          }
+        ],
+        "title": "Number of HG",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "alexanderzobnin-zabbix-datasource",
+          "uid": "${DS_ZABBIX}"
+        },
+        "description": "Number of file system",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 2,
+          "x": 11,
+          "y": 5
+        },
+        "id": 69,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "last"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "textMode": "auto"
+        },
+        "pluginVersion": "9.4.7",
+        "targets": [
+          {
+            "application": {
+              "filter": ""
+            },
+            "countTriggersBy": "",
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "functions": [],
+            "group": {
+              "filter": "$group"
+            },
+            "host": {
+              "filter": "$appliance"
+            },
+            "item": {
+              "filter": "Number of file_system"
+            },
+            "itemTag": {
+              "filter": "resource: file_system"
+            },
+            "macro": {
+              "filter": ""
+            },
+            "options": {
+              "count": false,
+              "disableDataAlignment": false,
+              "showDisabledItems": false,
+              "skipEmptyValues": false,
+              "useTrends": "default",
+              "useZabbixValueMapping": false
+            },
+            "proxy": {
+              "filter": ""
+            },
+            "queryType": "0",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "schema": 12,
+            "table": {
+              "skipEmptyValues": false
+            },
+            "tags": {
+              "filter": ""
+            },
+            "textFilter": "",
+            "trigger": {
+              "filter": ""
+            }
+          }
+        ],
+        "title": "Number of file system",
+        "type": "stat"
+      },
+      {
+        "collapsed": false,
+        "datasource": {
+          "type": "alexanderzobnin-zabbix-datasource",
+          "uid": "tgY0YwS4k"
+        },
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 9
+        },
+        "id": 28,
+        "panels": [],
+        "targets": [
+          {
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "tgY0YwS4k"
+            },
+            "refId": "A"
+          }
+        ],
+        "title": "Appliance metric",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "alexanderzobnin-zabbix-datasource",
+          "uid": "${DS_ZABBIX}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 14,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "iops"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Appliance Total IOPS"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "red",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Appliance Read IOPS"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "green",
+                    "mode": "fixed"
+                  }
+                },
+                {
+                  "id": "custom.fillOpacity",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Appliance Write IOPS"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "blue",
+                    "mode": "fixed"
+                  }
+                },
+                {
+                  "id": "custom.fillOpacity",
+                  "value": 0
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 10
+        },
+        "id": 30,
+        "options": {
+          "legend": {
+            "calcs": [
+              "min",
+              "max",
+              "mean"
+            ],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "application": {
+              "filter": ""
+            },
+            "countTriggersBy": "",
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "functions": [
+              {
+                "$$hashKey": "object:236",
+                "def": {
+                  "category": "Alias",
+                  "defaultParams": [],
+                  "name": "setAlias",
+                  "params": [
+                    {
+                      "name": "alias",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "params": [
+                  "Appliance Total IOPS"
+                ],
+                "text": "setAlias(Appliance Total IOPS)"
+              }
+            ],
+            "group": {
+              "filter": "$group"
+            },
+            "host": {
+              "filter": "$appliance"
+            },
+            "item": {
+              "filter": "/.* performance metrics by appliance total_iops/"
+            },
+            "itemTag": {
+              "filter": "metric: appliance"
+            },
+            "macro": {
+              "filter": ""
+            },
+            "options": {
+              "count": true,
+              "disableDataAlignment": false,
+              "minSeverity": 3,
+              "showDisabledItems": false,
+              "skipEmptyValues": false,
+              "useTrends": "default",
+              "useZabbixValueMapping": false
+            },
+            "proxy": {
+              "filter": ""
+            },
+            "queryType": "0",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "schema": 12,
+            "table": {
+              "skipEmptyValues": false
+            },
+            "tags": {
+              "filter": ""
+            },
+            "textFilter": "",
+            "trigger": {
+              "filter": ""
+            },
+            "triggers": {
+              "acknowledged": 2
+            }
+          },
+          {
+            "application": {
+              "filter": ""
+            },
+            "countTriggersBy": "",
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "functions": [
+              {
+                "$$hashKey": "object:257",
+                "def": {
+                  "category": "Alias",
+                  "defaultParams": [],
+                  "name": "setAlias",
+                  "params": [
+                    {
+                      "name": "alias",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "params": [
+                  "Appliance Read IOPS"
+                ],
+                "text": "setAlias(Appliance Read IOPS)"
+              }
+            ],
+            "group": {
+              "filter": "$group"
+            },
+            "hide": false,
+            "host": {
+              "filter": "$appliance"
+            },
+            "item": {
+              "filter": "/.* performance metrics by appliance read_iops/"
+            },
+            "itemTag": {
+              "filter": "metric: appliance"
+            },
+            "macro": {
+              "filter": ""
+            },
+            "options": {
+              "count": true,
+              "disableDataAlignment": false,
+              "minSeverity": 3,
+              "showDisabledItems": false,
+              "skipEmptyValues": false,
+              "useTrends": "default",
+              "useZabbixValueMapping": false
+            },
+            "proxy": {
+              "filter": ""
+            },
+            "queryType": "0",
+            "refId": "B",
+            "resultFormat": "time_series",
+            "schema": 12,
+            "table": {
+              "skipEmptyValues": false
+            },
+            "tags": {
+              "filter": ""
+            },
+            "textFilter": "",
+            "trigger": {
+              "filter": ""
+            },
+            "triggers": {
+              "acknowledged": 2
+            }
+          },
+          {
+            "application": {
+              "filter": ""
+            },
+            "countTriggersBy": "",
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "functions": [
+              {
+                "$$hashKey": "object:257",
+                "def": {
+                  "category": "Alias",
+                  "defaultParams": [],
+                  "name": "setAlias",
+                  "params": [
+                    {
+                      "name": "alias",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "params": [
+                  "Appliance Write IOPS"
+                ],
+                "text": "setAlias(Appliance Read IOPS)"
+              }
+            ],
+            "group": {
+              "filter": "$group"
+            },
+            "hide": false,
+            "host": {
+              "filter": "$appliance"
+            },
+            "item": {
+              "filter": "/.* performance metrics by appliance write_iops/"
+            },
+            "itemTag": {
+              "filter": "metric: appliance"
+            },
+            "macro": {
+              "filter": ""
+            },
+            "options": {
+              "count": true,
+              "disableDataAlignment": false,
+              "minSeverity": 3,
+              "showDisabledItems": false,
+              "skipEmptyValues": false,
+              "useTrends": "default",
+              "useZabbixValueMapping": false
+            },
+            "proxy": {
+              "filter": ""
+            },
+            "queryType": "0",
+            "refId": "C",
+            "resultFormat": "time_series",
+            "schema": 12,
+            "table": {
+              "skipEmptyValues": false
+            },
+            "tags": {
+              "filter": ""
+            },
+            "textFilter": "",
+            "trigger": {
+              "filter": ""
+            },
+            "triggers": {
+              "acknowledged": 2
+            }
+          }
+        ],
+        "title": "Appliance IOPS",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "alexanderzobnin-zabbix-datasource",
+          "uid": "${DS_ZABBIX}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 14,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "Bps"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byRegexp",
+                "options": "/.*mirror.*/"
+              },
+              "properties": [
+                {
+                  "id": "custom.hideFrom",
+                  "value": {
+                    "legend": true,
+                    "tooltip": true,
+                    "viz": true
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 10
+        },
+        "id": 31,
+        "options": {
+          "legend": {
+            "calcs": [
+              "min",
+              "max",
+              "mean"
+            ],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "application": {
+              "filter": ""
+            },
+            "countTriggersBy": "",
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "functions": [
+              {
+                "$$hashKey": "object:1793",
+                "def": {
+                  "category": "Alias",
+                  "defaultParams": [],
+                  "name": "setAlias",
+                  "params": [
+                    {
+                      "name": "alias",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "params": [
+                  "Appliance Total IOPS"
+                ],
+                "text": "setAlias(Appliance Total IOPS)"
+              }
+            ],
+            "group": {
+              "filter": "$group"
+            },
+            "host": {
+              "filter": "$appliance"
+            },
+            "item": {
+              "filter": "/.* performance metrics by appliance total_bandwidth/"
+            },
+            "itemTag": {
+              "filter": "metric: appliance"
+            },
+            "macro": {
+              "filter": ""
+            },
+            "options": {
+              "count": true,
+              "disableDataAlignment": false,
+              "minSeverity": 3,
+              "showDisabledItems": false,
+              "skipEmptyValues": false,
+              "useTrends": "default",
+              "useZabbixValueMapping": false
+            },
+            "proxy": {
+              "filter": ""
+            },
+            "queryType": "0",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "schema": 12,
+            "table": {
+              "skipEmptyValues": false
+            },
+            "tags": {
+              "filter": ""
+            },
+            "textFilter": "",
+            "trigger": {
+              "filter": ""
+            },
+            "triggers": {
+              "acknowledged": 2
+            }
+          },
+          {
+            "application": {
+              "filter": ""
+            },
+            "countTriggersBy": "",
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "functions": [
+              {
+                "$$hashKey": "object:1793",
+                "def": {
+                  "category": "Alias",
+                  "defaultParams": [],
+                  "name": "setAlias",
+                  "params": [
+                    {
+                      "name": "alias",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "params": [
+                  "Appliance Read IOPS"
+                ],
+                "text": "setAlias(Appliance Total IOPS)"
+              }
+            ],
+            "group": {
+              "filter": "$group"
+            },
+            "hide": false,
+            "host": {
+              "filter": "$appliance"
+            },
+            "item": {
+              "filter": "/.* performance metrics by appliance read_bandwidth/"
+            },
+            "itemTag": {
+              "filter": "metric: appliance"
+            },
+            "macro": {
+              "filter": ""
+            },
+            "options": {
+              "count": true,
+              "disableDataAlignment": false,
+              "minSeverity": 3,
+              "showDisabledItems": false,
+              "skipEmptyValues": false,
+              "useTrends": "default",
+              "useZabbixValueMapping": false
+            },
+            "proxy": {
+              "filter": ""
+            },
+            "queryType": "0",
+            "refId": "B",
+            "resultFormat": "time_series",
+            "schema": 12,
+            "table": {
+              "skipEmptyValues": false
+            },
+            "tags": {
+              "filter": ""
+            },
+            "textFilter": "",
+            "trigger": {
+              "filter": ""
+            },
+            "triggers": {
+              "acknowledged": 2
+            }
+          },
+          {
+            "application": {
+              "filter": ""
+            },
+            "countTriggersBy": "",
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "functions": [
+              {
+                "$$hashKey": "object:1793",
+                "def": {
+                  "category": "Alias",
+                  "defaultParams": [],
+                  "name": "setAlias",
+                  "params": [
+                    {
+                      "name": "alias",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "params": [
+                  "Appliance Write IOPS"
+                ],
+                "text": "setAlias(Appliance Total IOPS)"
+              }
+            ],
+            "group": {
+              "filter": "$group"
+            },
+            "hide": false,
+            "host": {
+              "filter": "$appliance"
+            },
+            "item": {
+              "filter": "/.* performance metrics by appliance write_bandwidth/"
+            },
+            "itemTag": {
+              "filter": "metric: appliance"
+            },
+            "macro": {
+              "filter": ""
+            },
+            "options": {
+              "count": true,
+              "disableDataAlignment": false,
+              "minSeverity": 3,
+              "showDisabledItems": false,
+              "skipEmptyValues": false,
+              "useTrends": "default",
+              "useZabbixValueMapping": false
+            },
+            "proxy": {
+              "filter": ""
+            },
+            "queryType": "0",
+            "refId": "C",
+            "resultFormat": "time_series",
+            "schema": 12,
+            "table": {
+              "skipEmptyValues": false
+            },
+            "tags": {
+              "filter": ""
+            },
+            "textFilter": "",
+            "trigger": {
+              "filter": ""
+            },
+            "triggers": {
+              "acknowledged": 2
+            }
+          }
+        ],
+        "title": "Appliance bandwidth",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "alexanderzobnin-zabbix-datasource",
+          "uid": "${DS_ZABBIX}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 14,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "µs"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 18
+        },
+        "id": 63,
+        "options": {
+          "legend": {
+            "calcs": [
+              "min",
+              "max",
+              "mean"
+            ],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "application": {
+              "filter": ""
+            },
+            "countTriggersBy": "",
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "functions": [
+              {
+                "$$hashKey": "object:1793",
+                "def": {
+                  "category": "Alias",
+                  "defaultParams": [],
+                  "name": "setAlias",
+                  "params": [
+                    {
+                      "name": "alias",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "params": [
+                  "Appliance Avg Latency"
+                ],
+                "text": "setAlias(Appliance Total IOPS)"
+              }
+            ],
+            "group": {
+              "filter": "$group"
+            },
+            "host": {
+              "filter": "$appliance"
+            },
+            "item": {
+              "filter": "/.* performance metrics by appliance avg_latency/"
+            },
+            "itemTag": {
+              "filter": "metric: appliance"
+            },
+            "macro": {
+              "filter": ""
+            },
+            "options": {
+              "count": true,
+              "disableDataAlignment": false,
+              "minSeverity": 3,
+              "showDisabledItems": false,
+              "skipEmptyValues": false,
+              "useTrends": "default",
+              "useZabbixValueMapping": false
+            },
+            "proxy": {
+              "filter": ""
+            },
+            "queryType": "0",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "schema": 12,
+            "table": {
+              "skipEmptyValues": false
+            },
+            "tags": {
+              "filter": ""
+            },
+            "textFilter": "",
+            "trigger": {
+              "filter": ""
+            },
+            "triggers": {
+              "acknowledged": 2
+            }
+          },
+          {
+            "application": {
+              "filter": ""
+            },
+            "countTriggersBy": "",
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "functions": [
+              {
+                "$$hashKey": "object:1793",
+                "def": {
+                  "category": "Alias",
+                  "defaultParams": [],
+                  "name": "setAlias",
+                  "params": [
+                    {
+                      "name": "alias",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "params": [
+                  "Appliance Avg Read Latency"
+                ],
+                "text": "setAlias(Appliance Total IOPS)"
+              }
+            ],
+            "group": {
+              "filter": "$group"
+            },
+            "hide": false,
+            "host": {
+              "filter": "$appliance"
+            },
+            "item": {
+              "filter": "/.* performance metrics by appliance avg_read_latency/"
+            },
+            "itemTag": {
+              "filter": "metric: appliance"
+            },
+            "macro": {
+              "filter": ""
+            },
+            "options": {
+              "count": true,
+              "disableDataAlignment": false,
+              "minSeverity": 3,
+              "showDisabledItems": false,
+              "skipEmptyValues": false,
+              "useTrends": "default",
+              "useZabbixValueMapping": false
+            },
+            "proxy": {
+              "filter": ""
+            },
+            "queryType": "0",
+            "refId": "B",
+            "resultFormat": "time_series",
+            "schema": 12,
+            "table": {
+              "skipEmptyValues": false
+            },
+            "tags": {
+              "filter": ""
+            },
+            "textFilter": "",
+            "trigger": {
+              "filter": ""
+            },
+            "triggers": {
+              "acknowledged": 2
+            }
+          },
+          {
+            "application": {
+              "filter": ""
+            },
+            "countTriggersBy": "",
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "functions": [
+              {
+                "$$hashKey": "object:1793",
+                "def": {
+                  "category": "Alias",
+                  "defaultParams": [],
+                  "name": "setAlias",
+                  "params": [
+                    {
+                      "name": "alias",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "params": [
+                  "Appliance Avg Write Latency"
+                ],
+                "text": "setAlias(Appliance Total IOPS)"
+              }
+            ],
+            "group": {
+              "filter": "$group"
+            },
+            "hide": false,
+            "host": {
+              "filter": "$appliance"
+            },
+            "item": {
+              "filter": "/.* performance metrics by appliance avg_write_latency/"
+            },
+            "itemTag": {
+              "filter": "metric: appliance"
+            },
+            "macro": {
+              "filter": ""
+            },
+            "options": {
+              "count": true,
+              "disableDataAlignment": false,
+              "minSeverity": 3,
+              "showDisabledItems": false,
+              "skipEmptyValues": false,
+              "useTrends": "default",
+              "useZabbixValueMapping": false
+            },
+            "proxy": {
+              "filter": ""
+            },
+            "queryType": "0",
+            "refId": "C",
+            "resultFormat": "time_series",
+            "schema": 12,
+            "table": {
+              "skipEmptyValues": false
+            },
+            "tags": {
+              "filter": ""
+            },
+            "textFilter": "",
+            "trigger": {
+              "filter": ""
+            },
+            "triggers": {
+              "acknowledged": 2
+            }
+          }
+        ],
+        "title": "Appliance latency",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "alexanderzobnin-zabbix-datasource",
+          "uid": "${DS_ZABBIX}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 14,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "decbytes"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byRegexp",
+                "options": "/.*data.*/"
+              },
+              "properties": [
+                {
+                  "id": "custom.hideFrom",
+                  "value": {
+                    "legend": true,
+                    "tooltip": true,
+                    "viz": true
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 18
+        },
+        "id": 25,
+        "options": {
+          "legend": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "application": {
+              "filter": ""
+            },
+            "countTriggersBy": "",
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "functions": [
+              {
+                "added": true,
+                "def": {
+                  "category": "Alias",
+                  "defaultParams": [],
+                  "name": "setAlias",
+                  "params": [
+                    {
+                      "name": "alias",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "params": [
+                  "Used space"
+                ],
+                "text": "setAlias()"
+              }
+            ],
+            "group": {
+              "filter": "$group"
+            },
+            "host": {
+              "filter": "$appliance"
+            },
+            "item": {
+              "filter": "/.*space metrics by appliance physical_used/"
+            },
+            "itemTag": {
+              "filter": "metric: appliance"
+            },
+            "macro": {
+              "filter": ""
+            },
+            "options": {
+              "count": false,
+              "disableDataAlignment": false,
+              "showDisabledItems": false,
+              "skipEmptyValues": false,
+              "useTrends": "default",
+              "useZabbixValueMapping": false
+            },
+            "proxy": {
+              "filter": ""
+            },
+            "queryType": "0",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "schema": 12,
+            "table": {
+              "skipEmptyValues": false
+            },
+            "tags": {
+              "filter": ""
+            },
+            "textFilter": "",
+            "trigger": {
+              "filter": ""
+            }
+          }
+        ],
+        "title": "Appliance Physical space",
+        "type": "timeseries"
+      },
+      {
+        "collapsed": true,
+        "datasource": {
+          "type": "alexanderzobnin-zabbix-datasource",
+          "uid": "tgY0YwS4k"
+        },
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 26
+        },
+        "id": 16,
+        "panels": [
+          {
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 18,
+                  "gradientMode": "hue",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "linear",
+                  "lineStyle": {
+                    "fill": "solid"
+                  },
+                  "lineWidth": 2,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "max": 1,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "percentunit"
+              },
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "NodeA CPU"
+                  },
+                  "properties": [
+                    {
+                      "id": "color",
+                      "value": {
+                        "fixedColor": "red",
+                        "mode": "fixed"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "NodeB CPU"
+                  },
+                  "properties": [
+                    {
+                      "id": "color",
+                      "value": {
+                        "fixedColor": "blue",
+                        "mode": "fixed"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 27
+            },
+            "id": 32,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "application": {
+                  "filter": ""
+                },
+                "countTriggersBy": "",
+                "datasource": {
+                  "type": "alexanderzobnin-zabbix-datasource",
+                  "uid": "${DS_ZABBIX}"
+                },
+                "functions": [
+                  {
+                    "$$hashKey": "object:146",
+                    "def": {
+                      "category": "Alias",
+                      "defaultParams": [],
+                      "name": "setAlias",
+                      "params": [
+                        {
+                          "name": "alias",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "NodeA CPU"
+                    ],
+                    "text": "setAlias(NodeA CPU)"
+                  }
+                ],
+                "group": {
+                  "filter": "/.*/"
+                },
+                "host": {
+                  "filter": "$appliance"
+                },
+                "item": {
+                  "filter": "N1 performance metrics by node io_workload_cpu_utilization"
+                },
+                "itemTag": {
+                  "filter": "metric: node"
+                },
+                "macro": {
+                  "filter": ""
+                },
+                "options": {
+                  "count": true,
+                  "disableDataAlignment": false,
+                  "minSeverity": 3,
+                  "showDisabledItems": false,
+                  "skipEmptyValues": false,
+                  "useTrends": "default",
+                  "useZabbixValueMapping": false
+                },
+                "proxy": {
+                  "filter": ""
+                },
+                "queryType": "0",
+                "refId": "A",
+                "resultFormat": "time_series",
+                "schema": 12,
+                "table": {
+                  "skipEmptyValues": false
+                },
+                "tags": {
+                  "filter": ""
+                },
+                "textFilter": "",
+                "trigger": {
+                  "filter": ""
+                },
+                "triggers": {
+                  "acknowledged": 2
+                }
+              },
+              {
+                "application": {
+                  "filter": ""
+                },
+                "countTriggersBy": "",
+                "datasource": {
+                  "type": "alexanderzobnin-zabbix-datasource",
+                  "uid": "${DS_ZABBIX}"
+                },
+                "functions": [
+                  {
+                    "$$hashKey": "object:194",
+                    "def": {
+                      "category": "Alias",
+                      "defaultParams": [],
+                      "name": "setAlias",
+                      "params": [
+                        {
+                          "name": "alias",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "NodeB CPU"
+                    ],
+                    "text": "setAlias(NodeB CPU)"
+                  }
+                ],
+                "group": {
+                  "filter": "/.*/"
+                },
+                "hide": false,
+                "host": {
+                  "filter": "$appliance"
+                },
+                "item": {
+                  "filter": "N2 performance metrics by node io_workload_cpu_utilization"
+                },
+                "itemTag": {
+                  "filter": "metric: node"
+                },
+                "macro": {
+                  "filter": ""
+                },
+                "options": {
+                  "count": true,
+                  "disableDataAlignment": false,
+                  "minSeverity": 3,
+                  "showDisabledItems": false,
+                  "skipEmptyValues": false,
+                  "useTrends": "default",
+                  "useZabbixValueMapping": false
+                },
+                "proxy": {
+                  "filter": ""
+                },
+                "queryType": "0",
+                "refId": "C",
+                "resultFormat": "time_series",
+                "schema": 12,
+                "table": {
+                  "skipEmptyValues": false
+                },
+                "tags": {
+                  "filter": ""
+                },
+                "textFilter": "",
+                "trigger": {
+                  "filter": ""
+                },
+                "triggers": {
+                  "acknowledged": 2
+                }
+              }
+            ],
+            "title": "Node CPU",
+            "type": "timeseries"
+          },
+          {
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 7,
+                  "gradientMode": "hue",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "smooth",
+                  "lineStyle": {
+                    "fill": "solid"
+                  },
+                  "lineWidth": 1,
+                  "pointSize": 4,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "Bps"
+              },
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byRegexp",
+                    "options": "/N2.*/"
+                  },
+                  "properties": [
+                    {
+                      "id": "custom.transform",
+                      "value": "negative-Y"
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 12,
+              "y": 27
+            },
+            "id": 9,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "min",
+                  "max",
+                  "mean"
+                ],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "application": {
+                  "filter": ""
+                },
+                "countTriggersBy": "",
+                "datasource": {
+                  "type": "alexanderzobnin-zabbix-datasource",
+                  "uid": "${DS_ZABBIX}"
+                },
+                "functions": [
+                  {
+                    "added": true,
+                    "def": {
+                      "category": "Alias",
+                      "defaultParams": [
+                        "/(.*)/",
+                        "$1"
+                      ],
+                      "name": "replaceAlias",
+                      "params": [
+                        {
+                          "name": "regexp",
+                          "type": "string"
+                        },
+                        {
+                          "name": "newAlias",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "/Discovered.*:(.*)/",
+                      "$1"
+                    ],
+                    "text": "replaceAlias(/(.*)/, $1)"
+                  }
+                ],
+                "group": {
+                  "filter": "$group"
+                },
+                "host": {
+                  "filter": "$appliance"
+                },
+                "item": {
+                  "filter": "/N1 performance metrics by node (total|read|write)_bandwidth/"
+                },
+                "itemTag": {
+                  "filter": "metric: node"
+                },
+                "macro": {
+                  "filter": ""
+                },
+                "options": {
+                  "count": true,
+                  "disableDataAlignment": false,
+                  "minSeverity": 3,
+                  "showDisabledItems": false,
+                  "skipEmptyValues": false,
+                  "useTrends": "default",
+                  "useZabbixValueMapping": false
+                },
+                "proxy": {
+                  "filter": ""
+                },
+                "queryType": "0",
+                "refId": "A",
+                "resultFormat": "time_series",
+                "schema": 12,
+                "table": {
+                  "skipEmptyValues": false
+                },
+                "tags": {
+                  "filter": ""
+                },
+                "textFilter": "",
+                "trigger": {
+                  "filter": ""
+                },
+                "triggers": {
+                  "acknowledged": 2
+                }
+              },
+              {
+                "application": {
+                  "filter": ""
+                },
+                "countTriggersBy": "",
+                "datasource": {
+                  "type": "alexanderzobnin-zabbix-datasource",
+                  "uid": "${DS_ZABBIX}"
+                },
+                "functions": [
+                  {
+                    "added": true,
+                    "def": {
+                      "category": "Alias",
+                      "defaultParams": [
+                        "/(.*)/",
+                        "$1"
+                      ],
+                      "name": "replaceAlias",
+                      "params": [
+                        {
+                          "name": "regexp",
+                          "type": "string"
+                        },
+                        {
+                          "name": "newAlias",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "/Discovered.*:(.*)/",
+                      "$1"
+                    ],
+                    "text": "replaceAlias(/(.*)/, $1)"
+                  }
+                ],
+                "group": {
+                  "filter": "$group"
+                },
+                "hide": false,
+                "host": {
+                  "filter": "$appliance"
+                },
+                "item": {
+                  "filter": "/N2 performance metrics by node (total|read|write)_bandwidth/"
+                },
+                "itemTag": {
+                  "filter": "metric: node"
+                },
+                "macro": {
+                  "filter": ""
+                },
+                "options": {
+                  "count": true,
+                  "disableDataAlignment": false,
+                  "minSeverity": 3,
+                  "showDisabledItems": false,
+                  "skipEmptyValues": false,
+                  "useTrends": "default",
+                  "useZabbixValueMapping": false
+                },
+                "proxy": {
+                  "filter": ""
+                },
+                "queryType": "0",
+                "refId": "B",
+                "resultFormat": "time_series",
+                "schema": 12,
+                "table": {
+                  "skipEmptyValues": false
+                },
+                "tags": {
+                  "filter": ""
+                },
+                "textFilter": "",
+                "trigger": {
+                  "filter": ""
+                },
+                "triggers": {
+                  "acknowledged": 2
+                }
+              }
+            ],
+            "title": "Node bandwidth",
+            "type": "timeseries"
+          },
+          {
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 7,
+                  "gradientMode": "hue",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "smooth",
+                  "lineStyle": {
+                    "fill": "solid"
+                  },
+                  "lineWidth": 1,
+                  "pointSize": 4,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "iops"
+              },
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byRegexp",
+                    "options": "/N2.*/"
+                  },
+                  "properties": [
+                    {
+                      "id": "custom.transform",
+                      "value": "negative-Y"
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 35
+            },
+            "id": 64,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "min",
+                  "max",
+                  "mean"
+                ],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "application": {
+                  "filter": ""
+                },
+                "countTriggersBy": "",
+                "datasource": {
+                  "type": "alexanderzobnin-zabbix-datasource",
+                  "uid": "${DS_ZABBIX}"
+                },
+                "functions": [
+                  {
+                    "added": true,
+                    "def": {
+                      "category": "Alias",
+                      "defaultParams": [
+                        "/(.*)/",
+                        "$1"
+                      ],
+                      "name": "replaceAlias",
+                      "params": [
+                        {
+                          "name": "regexp",
+                          "type": "string"
+                        },
+                        {
+                          "name": "newAlias",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "/Discovered.*:(.*)/",
+                      "$1"
+                    ],
+                    "text": "replaceAlias(/(.*)/, $1)"
+                  }
+                ],
+                "group": {
+                  "filter": "$group"
+                },
+                "host": {
+                  "filter": "$appliance"
+                },
+                "item": {
+                  "filter": "/N1 performance metrics by node (total|read|write)_iops/"
+                },
+                "itemTag": {
+                  "filter": "metric: node"
+                },
+                "macro": {
+                  "filter": ""
+                },
+                "options": {
+                  "count": true,
+                  "disableDataAlignment": false,
+                  "minSeverity": 3,
+                  "showDisabledItems": false,
+                  "skipEmptyValues": false,
+                  "useTrends": "default",
+                  "useZabbixValueMapping": false
+                },
+                "proxy": {
+                  "filter": ""
+                },
+                "queryType": "0",
+                "refId": "A",
+                "resultFormat": "time_series",
+                "schema": 12,
+                "table": {
+                  "skipEmptyValues": false
+                },
+                "tags": {
+                  "filter": ""
+                },
+                "textFilter": "",
+                "trigger": {
+                  "filter": ""
+                },
+                "triggers": {
+                  "acknowledged": 2
+                }
+              },
+              {
+                "application": {
+                  "filter": ""
+                },
+                "countTriggersBy": "",
+                "datasource": {
+                  "type": "alexanderzobnin-zabbix-datasource",
+                  "uid": "${DS_ZABBIX}"
+                },
+                "functions": [
+                  {
+                    "added": true,
+                    "def": {
+                      "category": "Alias",
+                      "defaultParams": [
+                        "/(.*)/",
+                        "$1"
+                      ],
+                      "name": "replaceAlias",
+                      "params": [
+                        {
+                          "name": "regexp",
+                          "type": "string"
+                        },
+                        {
+                          "name": "newAlias",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "/Discovered.*:(.*)/",
+                      "$1"
+                    ],
+                    "text": "replaceAlias(/(.*)/, $1)"
+                  }
+                ],
+                "group": {
+                  "filter": "$group"
+                },
+                "hide": false,
+                "host": {
+                  "filter": "$appliance"
+                },
+                "item": {
+                  "filter": "/N2 performance metrics by node (total|read|write)_iops/"
+                },
+                "itemTag": {
+                  "filter": "metric: node"
+                },
+                "macro": {
+                  "filter": ""
+                },
+                "options": {
+                  "count": true,
+                  "disableDataAlignment": false,
+                  "minSeverity": 3,
+                  "showDisabledItems": false,
+                  "skipEmptyValues": false,
+                  "useTrends": "default",
+                  "useZabbixValueMapping": false
+                },
+                "proxy": {
+                  "filter": ""
+                },
+                "queryType": "0",
+                "refId": "B",
+                "resultFormat": "time_series",
+                "schema": 12,
+                "table": {
+                  "skipEmptyValues": false
+                },
+                "tags": {
+                  "filter": ""
+                },
+                "textFilter": "",
+                "trigger": {
+                  "filter": ""
+                },
+                "triggers": {
+                  "acknowledged": 2
+                }
+              }
+            ],
+            "title": "Node IOPS",
+            "type": "timeseries"
+          },
+          {
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 7,
+                  "gradientMode": "hue",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "smooth",
+                  "lineStyle": {
+                    "fill": "solid"
+                  },
+                  "lineWidth": 1,
+                  "pointSize": 4,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "µs"
+              },
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byRegexp",
+                    "options": "/N2.*/"
+                  },
+                  "properties": [
+                    {
+                      "id": "custom.transform",
+                      "value": "negative-Y"
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 12,
+              "y": 35
+            },
+            "id": 65,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "min",
+                  "max",
+                  "mean"
+                ],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "application": {
+                  "filter": ""
+                },
+                "countTriggersBy": "",
+                "datasource": {
+                  "type": "alexanderzobnin-zabbix-datasource",
+                  "uid": "${DS_ZABBIX}"
+                },
+                "functions": [
+                  {
+                    "added": true,
+                    "def": {
+                      "category": "Alias",
+                      "defaultParams": [
+                        "/(.*)/",
+                        "$1"
+                      ],
+                      "name": "replaceAlias",
+                      "params": [
+                        {
+                          "name": "regexp",
+                          "type": "string"
+                        },
+                        {
+                          "name": "newAlias",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "/Discovered.*: (.*)/",
+                      "$1"
+                    ],
+                    "text": "replaceAlias(/(.*)/, $1)"
+                  }
+                ],
+                "group": {
+                  "filter": "$group"
+                },
+                "hide": false,
+                "host": {
+                  "filter": "$appliance"
+                },
+                "item": {
+                  "filter": "N1 performance metrics by node avg_latency"
+                },
+                "itemTag": {
+                  "filter": "metric: node"
+                },
+                "macro": {
+                  "filter": ""
+                },
+                "options": {
+                  "count": false,
+                  "disableDataAlignment": false,
+                  "showDisabledItems": false,
+                  "skipEmptyValues": false,
+                  "useTrends": "default",
+                  "useZabbixValueMapping": false
+                },
+                "proxy": {
+                  "filter": ""
+                },
+                "queryType": "0",
+                "refId": "A",
+                "resultFormat": "time_series",
+                "schema": 12,
+                "table": {
+                  "skipEmptyValues": false
+                },
+                "tags": {
+                  "filter": ""
+                },
+                "textFilter": "",
+                "trigger": {
+                  "filter": ""
+                }
+              },
+              {
+                "application": {
+                  "filter": ""
+                },
+                "countTriggersBy": "",
+                "datasource": {
+                  "type": "alexanderzobnin-zabbix-datasource",
+                  "uid": "${DS_ZABBIX}"
+                },
+                "functions": [
+                  {
+                    "added": true,
+                    "def": {
+                      "category": "Alias",
+                      "defaultParams": [
+                        "/(.*)/",
+                        "$1"
+                      ],
+                      "name": "replaceAlias",
+                      "params": [
+                        {
+                          "name": "regexp",
+                          "type": "string"
+                        },
+                        {
+                          "name": "newAlias",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "/Discovered.*: (.*)/",
+                      "$1"
+                    ],
+                    "text": "replaceAlias(/(.*)/, $1)"
+                  }
+                ],
+                "group": {
+                  "filter": "$group"
+                },
+                "hide": false,
+                "host": {
+                  "filter": "$appliance"
+                },
+                "item": {
+                  "filter": "N2 performance metrics by node avg_latency"
+                },
+                "itemTag": {
+                  "filter": "metric: node"
+                },
+                "macro": {
+                  "filter": ""
+                },
+                "options": {
+                  "count": false,
+                  "disableDataAlignment": false,
+                  "showDisabledItems": false,
+                  "skipEmptyValues": false,
+                  "useTrends": "default",
+                  "useZabbixValueMapping": false
+                },
+                "proxy": {
+                  "filter": ""
+                },
+                "queryType": "0",
+                "refId": "B",
+                "resultFormat": "time_series",
+                "schema": 12,
+                "table": {
+                  "skipEmptyValues": false
+                },
+                "tags": {
+                  "filter": ""
+                },
+                "textFilter": "",
+                "trigger": {
+                  "filter": ""
+                }
+              }
+            ],
+            "title": "Node avg latency",
+            "type": "timeseries"
+          }
+        ],
+        "targets": [
+          {
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "tgY0YwS4k"
+            },
+            "refId": "A"
+          }
+        ],
+        "title": "Node metric",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 27
+        },
+        "id": 38,
+        "panels": [
+          {
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "description": "It will show as red if the free space less than 100GB",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "min": 0,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red"
+                    },
+                    {
+                      "color": "green",
+                      "value": 107374182400
+                    }
+                  ]
+                },
+                "unit": "bits"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 44
+            },
+            "id": 40,
+            "options": {
+              "displayMode": "lcd",
+              "minVizHeight": 10,
+              "minVizWidth": 0,
+              "orientation": "horizontal",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "showUnfilled": true
+            },
+            "pluginVersion": "9.4.7",
+            "targets": [
+              {
+                "application": {
+                  "filter": ""
+                },
+                "countTriggersBy": "",
+                "datasource": {
+                  "type": "alexanderzobnin-zabbix-datasource",
+                  "uid": "${DS_ZABBIX}"
+                },
+                "functions": [
+                  {
+                    "added": true,
+                    "def": {
+                      "category": "Filter",
+                      "defaultParams": [
+                        5,
+                        "avg"
+                      ],
+                      "name": "bottom",
+                      "params": [
+                        {
+                          "name": "number",
+                          "type": "int"
+                        },
+                        {
+                          "name": "value",
+                          "options": [
+                            "avg",
+                            "min",
+                            "max",
+                            "sum",
+                            "count",
+                            "median",
+                            "first",
+                            "last"
+                          ],
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "5",
+                      "avg"
+                    ],
+                    "text": "bottom(5, avg)"
+                  },
+                  {
+                    "added": true,
+                    "def": {
+                      "category": "Alias",
+                      "defaultParams": [
+                        "/(.*)/",
+                        "$1"
+                      ],
+                      "name": "replaceAlias",
+                      "params": [
+                        {
+                          "name": "regexp",
+                          "type": "string"
+                        },
+                        {
+                          "name": "newAlias",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "/Discovered.*: (.*) space metrics by volume free/",
+                      "$1 free space"
+                    ],
+                    "text": "replaceAlias(/(.*)/, $1)"
+                  }
+                ],
+                "group": {
+                  "filter": "$group"
+                },
+                "host": {
+                  "filter": "$appliance"
+                },
+                "item": {
+                  "filter": "/.*space metrics by volume free/"
+                },
+                "itemTag": {
+                  "filter": "metric: volume"
+                },
+                "macro": {
+                  "filter": ""
+                },
+                "options": {
+                  "count": true,
+                  "disableDataAlignment": false,
+                  "minSeverity": 3,
+                  "showDisabledItems": false,
+                  "skipEmptyValues": false,
+                  "useTrends": "default",
+                  "useZabbixValueMapping": false
+                },
+                "proxy": {
+                  "filter": ""
+                },
+                "queryType": "0",
+                "refId": "A",
+                "resultFormat": "time_series",
+                "schema": 12,
+                "table": {
+                  "skipEmptyValues": false
+                },
+                "tags": {
+                  "filter": ""
+                },
+                "textFilter": "",
+                "trigger": {
+                  "filter": ""
+                },
+                "triggers": {
+                  "acknowledged": 2
+                }
+              }
+            ],
+            "title": "Volume free space bottom 5",
+            "transformations": [],
+            "type": "bargauge"
+          },
+          {
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 7,
+                  "gradientMode": "hue",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "smooth",
+                  "lineStyle": {
+                    "fill": "solid"
+                  },
+                  "lineWidth": 1,
+                  "pointSize": 4,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "binbps"
+              },
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byRegexp",
+                    "options": "/N2.*/"
+                  },
+                  "properties": [
+                    {
+                      "id": "custom.transform",
+                      "value": "negative-Y"
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 12,
+              "y": 44
+            },
+            "id": 67,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "min",
+                  "max",
+                  "mean"
+                ],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "application": {
+                  "filter": ""
+                },
+                "countTriggersBy": "",
+                "datasource": {
+                  "type": "alexanderzobnin-zabbix-datasource",
+                  "uid": "${DS_ZABBIX}"
+                },
+                "functions": [
+                  {
+                    "added": true,
+                    "def": {
+                      "category": "Filter",
+                      "defaultParams": [
+                        5,
+                        "avg"
+                      ],
+                      "name": "top",
+                      "params": [
+                        {
+                          "name": "number",
+                          "type": "int"
+                        },
+                        {
+                          "name": "value",
+                          "options": [
+                            "avg",
+                            "min",
+                            "max",
+                            "sum",
+                            "count",
+                            "median",
+                            "first",
+                            "last"
+                          ],
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "5",
+                      "avg"
+                    ],
+                    "text": "top(5, avg)"
+                  },
+                  {
+                    "added": true,
+                    "def": {
+                      "category": "Alias",
+                      "defaultParams": [
+                        "/(.*)/",
+                        "$1"
+                      ],
+                      "name": "replaceAlias",
+                      "params": [
+                        {
+                          "name": "regexp",
+                          "type": "string"
+                        },
+                        {
+                          "name": "newAlias",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "/Discovered.*:(.*)/",
+                      "$1"
+                    ],
+                    "text": "replaceAlias(/(.*)/, $1)"
+                  }
+                ],
+                "group": {
+                  "filter": "$group"
+                },
+                "host": {
+                  "filter": "$appliance"
+                },
+                "item": {
+                  "filter": "/.* performance metrics by volume total_bandwidth/"
+                },
+                "itemTag": {
+                  "filter": "metric: volume"
+                },
+                "macro": {
+                  "filter": ""
+                },
+                "options": {
+                  "count": true,
+                  "disableDataAlignment": false,
+                  "minSeverity": 3,
+                  "showDisabledItems": false,
+                  "skipEmptyValues": false,
+                  "useTrends": "default",
+                  "useZabbixValueMapping": false
+                },
+                "proxy": {
+                  "filter": ""
+                },
+                "queryType": "0",
+                "refId": "A",
+                "resultFormat": "time_series",
+                "schema": 12,
+                "table": {
+                  "skipEmptyValues": false
+                },
+                "tags": {
+                  "filter": ""
+                },
+                "textFilter": "",
+                "trigger": {
+                  "filter": ""
+                },
+                "triggers": {
+                  "acknowledged": 2
+                }
+              }
+            ],
+            "title": "Volume bandwidth top 5",
+            "type": "timeseries"
+          },
+          {
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 7,
+                  "gradientMode": "hue",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "smooth",
+                  "lineStyle": {
+                    "fill": "solid"
+                  },
+                  "lineWidth": 1,
+                  "pointSize": 4,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "iops"
+              },
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byRegexp",
+                    "options": "/N2.*/"
+                  },
+                  "properties": [
+                    {
+                      "id": "custom.transform",
+                      "value": "negative-Y"
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 52
+            },
+            "id": 66,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "min",
+                  "max",
+                  "mean"
+                ],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "application": {
+                  "filter": ""
+                },
+                "countTriggersBy": "",
+                "datasource": {
+                  "type": "alexanderzobnin-zabbix-datasource",
+                  "uid": "${DS_ZABBIX}"
+                },
+                "functions": [
+                  {
+                    "added": true,
+                    "def": {
+                      "category": "Filter",
+                      "defaultParams": [
+                        5,
+                        "avg"
+                      ],
+                      "name": "top",
+                      "params": [
+                        {
+                          "name": "number",
+                          "type": "int"
+                        },
+                        {
+                          "name": "value",
+                          "options": [
+                            "avg",
+                            "min",
+                            "max",
+                            "sum",
+                            "count",
+                            "median",
+                            "first",
+                            "last"
+                          ],
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "5",
+                      "avg"
+                    ],
+                    "text": "top(5, avg)"
+                  },
+                  {
+                    "added": true,
+                    "def": {
+                      "category": "Alias",
+                      "defaultParams": [
+                        "/(.*)/",
+                        "$1"
+                      ],
+                      "name": "replaceAlias",
+                      "params": [
+                        {
+                          "name": "regexp",
+                          "type": "string"
+                        },
+                        {
+                          "name": "newAlias",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "/Discovered.*:(.*)/",
+                      "$1"
+                    ],
+                    "text": "replaceAlias(/(.*)/, $1)"
+                  }
+                ],
+                "group": {
+                  "filter": "$group"
+                },
+                "host": {
+                  "filter": "$appliance"
+                },
+                "item": {
+                  "filter": "/.* performance metrics by volume total_iops/"
+                },
+                "itemTag": {
+                  "filter": "metric: volume"
+                },
+                "macro": {
+                  "filter": ""
+                },
+                "options": {
+                  "count": true,
+                  "disableDataAlignment": false,
+                  "minSeverity": 3,
+                  "showDisabledItems": false,
+                  "skipEmptyValues": false,
+                  "useTrends": "default",
+                  "useZabbixValueMapping": false
+                },
+                "proxy": {
+                  "filter": ""
+                },
+                "queryType": "0",
+                "refId": "A",
+                "resultFormat": "time_series",
+                "schema": 12,
+                "table": {
+                  "skipEmptyValues": false
+                },
+                "tags": {
+                  "filter": ""
+                },
+                "textFilter": "",
+                "trigger": {
+                  "filter": ""
+                },
+                "triggers": {
+                  "acknowledged": 2
+                }
+              }
+            ],
+            "title": "Volume IOPS top 5",
+            "type": "timeseries"
+          },
+          {
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 7,
+                  "gradientMode": "hue",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "smooth",
+                  "lineStyle": {
+                    "fill": "solid"
+                  },
+                  "lineWidth": 1,
+                  "pointSize": 4,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "µs"
+              },
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byRegexp",
+                    "options": "/N2.*/"
+                  },
+                  "properties": [
+                    {
+                      "id": "custom.transform",
+                      "value": "negative-Y"
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 12,
+              "y": 52
+            },
+            "id": 77,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "min",
+                  "max",
+                  "mean"
+                ],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "application": {
+                  "filter": ""
+                },
+                "countTriggersBy": "",
+                "datasource": {
+                  "type": "alexanderzobnin-zabbix-datasource",
+                  "uid": "${DS_ZABBIX}"
+                },
+                "functions": [
+                  {
+                    "added": true,
+                    "def": {
+                      "category": "Filter",
+                      "defaultParams": [
+                        5,
+                        "avg"
+                      ],
+                      "name": "top",
+                      "params": [
+                        {
+                          "name": "number",
+                          "type": "int"
+                        },
+                        {
+                          "name": "value",
+                          "options": [
+                            "avg",
+                            "min",
+                            "max",
+                            "sum",
+                            "count",
+                            "median",
+                            "first",
+                            "last"
+                          ],
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "5",
+                      "avg"
+                    ],
+                    "text": "top(5, avg)"
+                  },
+                  {
+                    "added": true,
+                    "def": {
+                      "category": "Alias",
+                      "defaultParams": [
+                        "/(.*)/",
+                        "$1"
+                      ],
+                      "name": "replaceAlias",
+                      "params": [
+                        {
+                          "name": "regexp",
+                          "type": "string"
+                        },
+                        {
+                          "name": "newAlias",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "/Discovered.*:(.*)/",
+                      "$1"
+                    ],
+                    "text": "replaceAlias(/(.*)/, $1)"
+                  }
+                ],
+                "group": {
+                  "filter": "$group"
+                },
+                "host": {
+                  "filter": "$appliance"
+                },
+                "item": {
+                  "filter": "/.* performance metrics by volume avg_latency/"
+                },
+                "itemTag": {
+                  "filter": "metric: volume"
+                },
+                "macro": {
+                  "filter": ""
+                },
+                "options": {
+                  "count": true,
+                  "disableDataAlignment": false,
+                  "minSeverity": 3,
+                  "showDisabledItems": false,
+                  "skipEmptyValues": false,
+                  "useTrends": "default",
+                  "useZabbixValueMapping": false
+                },
+                "proxy": {
+                  "filter": ""
+                },
+                "queryType": "0",
+                "refId": "A",
+                "resultFormat": "time_series",
+                "schema": 12,
+                "table": {
+                  "skipEmptyValues": false
+                },
+                "tags": {
+                  "filter": ""
+                },
+                "textFilter": "",
+                "trigger": {
+                  "filter": ""
+                },
+                "triggers": {
+                  "acknowledged": 2
+                }
+              }
+            ],
+            "title": "Volume latency top 5",
+            "type": "timeseries"
+          }
+        ],
+        "title": "Volume metric",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 28
+        },
+        "id": 71,
+        "panels": [
+          {
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 7,
+                  "gradientMode": "hue",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "smooth",
+                  "lineStyle": {
+                    "fill": "solid"
+                  },
+                  "lineWidth": 1,
+                  "pointSize": 4,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "Bps"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 29
+            },
+            "id": 22,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "min",
+                  "max",
+                  "mean"
+                ],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "application": {
+                  "filter": ""
+                },
+                "countTriggersBy": "",
+                "datasource": {
+                  "type": "alexanderzobnin-zabbix-datasource",
+                  "uid": "${DS_ZABBIX}"
+                },
+                "functions": [
+                  {
+                    "added": true,
+                    "def": {
+                      "category": "Filter",
+                      "defaultParams": [
+                        5,
+                        "avg"
+                      ],
+                      "name": "top",
+                      "params": [
+                        {
+                          "name": "number",
+                          "type": "int"
+                        },
+                        {
+                          "name": "value",
+                          "options": [
+                            "avg",
+                            "min",
+                            "max",
+                            "sum",
+                            "count",
+                            "median",
+                            "first",
+                            "last"
+                          ],
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "5",
+                      "avg"
+                    ],
+                    "text": "top(5, avg)"
+                  },
+                  {
+                    "added": true,
+                    "def": {
+                      "category": "Alias",
+                      "defaultParams": [
+                        "/(.*)/",
+                        "$1"
+                      ],
+                      "name": "replaceAlias",
+                      "params": [
+                        {
+                          "name": "regexp",
+                          "type": "string"
+                        },
+                        {
+                          "name": "newAlias",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "/Discovered.*: (.*)/",
+                      "$1"
+                    ],
+                    "text": "replaceAlias(/(.*)/, $1)"
+                  }
+                ],
+                "group": {
+                  "filter": "$group"
+                },
+                "host": {
+                  "filter": "$appliance"
+                },
+                "item": {
+                  "filter": "/.* performance metrics by nas server total_bandwidth/"
+                },
+                "itemTag": {
+                  "filter": "metric: nas_server"
+                },
+                "macro": {
+                  "filter": ""
+                },
+                "options": {
+                  "count": true,
+                  "disableDataAlignment": false,
+                  "minSeverity": 3,
+                  "showDisabledItems": false,
+                  "skipEmptyValues": false,
+                  "useTrends": "default",
+                  "useZabbixValueMapping": false
+                },
+                "proxy": {
+                  "filter": ""
+                },
+                "queryType": "0",
+                "refId": "A",
+                "resultFormat": "time_series",
+                "schema": 12,
+                "table": {
+                  "skipEmptyValues": false
+                },
+                "tags": {
+                  "filter": ""
+                },
+                "textFilter": "",
+                "trigger": {
+                  "filter": ""
+                },
+                "triggers": {
+                  "acknowledged": 2
+                }
+              }
+            ],
+            "title": "NAS Server bandwidth top 5",
+            "type": "timeseries"
+          },
+          {
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 7,
+                  "gradientMode": "hue",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "smooth",
+                  "lineStyle": {
+                    "fill": "solid"
+                  },
+                  "lineWidth": 1,
+                  "pointSize": 4,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "iops"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 12,
+              "y": 29
+            },
+            "id": 72,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "min",
+                  "max",
+                  "mean"
+                ],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "application": {
+                  "filter": ""
+                },
+                "countTriggersBy": "",
+                "datasource": {
+                  "type": "alexanderzobnin-zabbix-datasource",
+                  "uid": "${DS_ZABBIX}"
+                },
+                "functions": [
+                  {
+                    "added": true,
+                    "def": {
+                      "category": "Filter",
+                      "defaultParams": [
+                        5,
+                        "avg"
+                      ],
+                      "name": "top",
+                      "params": [
+                        {
+                          "name": "number",
+                          "type": "int"
+                        },
+                        {
+                          "name": "value",
+                          "options": [
+                            "avg",
+                            "min",
+                            "max",
+                            "sum",
+                            "count",
+                            "median",
+                            "first",
+                            "last"
+                          ],
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "5",
+                      "avg"
+                    ],
+                    "text": "top(5, avg)"
+                  },
+                  {
+                    "added": true,
+                    "def": {
+                      "category": "Alias",
+                      "defaultParams": [
+                        "/(.*)/",
+                        "$1"
+                      ],
+                      "name": "replaceAlias",
+                      "params": [
+                        {
+                          "name": "regexp",
+                          "type": "string"
+                        },
+                        {
+                          "name": "newAlias",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "/Discovered.*: (.*)/",
+                      "$1"
+                    ],
+                    "text": "replaceAlias(/(.*)/, $1)"
+                  }
+                ],
+                "group": {
+                  "filter": "$group"
+                },
+                "host": {
+                  "filter": "$appliance"
+                },
+                "item": {
+                  "filter": "/.* performance metrics by nas server total_iops/"
+                },
+                "itemTag": {
+                  "filter": "metric: nas_server"
+                },
+                "macro": {
+                  "filter": ""
+                },
+                "options": {
+                  "count": true,
+                  "disableDataAlignment": false,
+                  "minSeverity": 3,
+                  "showDisabledItems": false,
+                  "skipEmptyValues": false,
+                  "useTrends": "default",
+                  "useZabbixValueMapping": false
+                },
+                "proxy": {
+                  "filter": ""
+                },
+                "queryType": "0",
+                "refId": "A",
+                "resultFormat": "time_series",
+                "schema": 12,
+                "table": {
+                  "skipEmptyValues": false
+                },
+                "tags": {
+                  "filter": ""
+                },
+                "textFilter": "",
+                "trigger": {
+                  "filter": ""
+                },
+                "triggers": {
+                  "acknowledged": 2
+                }
+              }
+            ],
+            "title": "NAS Server IOPS top 5",
+            "type": "timeseries"
+          },
+          {
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 7,
+                  "gradientMode": "hue",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "smooth",
+                  "lineStyle": {
+                    "fill": "solid"
+                  },
+                  "lineWidth": 1,
+                  "pointSize": 4,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "µs"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 37
+            },
+            "id": 73,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "min",
+                  "max",
+                  "mean"
+                ],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "application": {
+                  "filter": ""
+                },
+                "countTriggersBy": "",
+                "datasource": {
+                  "type": "alexanderzobnin-zabbix-datasource",
+                  "uid": "${DS_ZABBIX}"
+                },
+                "functions": [
+                  {
+                    "added": true,
+                    "def": {
+                      "category": "Filter",
+                      "defaultParams": [
+                        5,
+                        "avg"
+                      ],
+                      "name": "top",
+                      "params": [
+                        {
+                          "name": "number",
+                          "type": "int"
+                        },
+                        {
+                          "name": "value",
+                          "options": [
+                            "avg",
+                            "min",
+                            "max",
+                            "sum",
+                            "count",
+                            "median",
+                            "first",
+                            "last"
+                          ],
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "5",
+                      "avg"
+                    ],
+                    "text": "top(5, avg)"
+                  },
+                  {
+                    "added": true,
+                    "def": {
+                      "category": "Alias",
+                      "defaultParams": [
+                        "/(.*)/",
+                        "$1"
+                      ],
+                      "name": "replaceAlias",
+                      "params": [
+                        {
+                          "name": "regexp",
+                          "type": "string"
+                        },
+                        {
+                          "name": "newAlias",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "/Discovered.*: (.*)/",
+                      "$1"
+                    ],
+                    "text": "replaceAlias(/(.*)/, $1)"
+                  }
+                ],
+                "group": {
+                  "filter": "$group"
+                },
+                "host": {
+                  "filter": "$appliance"
+                },
+                "item": {
+                  "filter": "/.* performance metrics by nas server avg_latency/"
+                },
+                "itemTag": {
+                  "filter": "metric: nas_server"
+                },
+                "macro": {
+                  "filter": ""
+                },
+                "options": {
+                  "count": true,
+                  "disableDataAlignment": false,
+                  "minSeverity": 3,
+                  "showDisabledItems": false,
+                  "skipEmptyValues": false,
+                  "useTrends": "default",
+                  "useZabbixValueMapping": false
+                },
+                "proxy": {
+                  "filter": ""
+                },
+                "queryType": "0",
+                "refId": "A",
+                "resultFormat": "time_series",
+                "schema": 12,
+                "table": {
+                  "skipEmptyValues": false
+                },
+                "tags": {
+                  "filter": ""
+                },
+                "textFilter": "",
+                "trigger": {
+                  "filter": ""
+                },
+                "triggers": {
+                  "acknowledged": 2
+                }
+              }
+            ],
+            "title": "NAS Server avg latency top 5",
+            "type": "timeseries"
+          }
+        ],
+        "title": "NAS Server metric",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "datasource": {
+          "type": "alexanderzobnin-zabbix-datasource",
+          "uid": "tgY0YwS4k"
+        },
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 29
+        },
+        "id": 21,
+        "panels": [
+          {
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "description": "It will show as red if the free space less than 100GB",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "min": 0,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red"
+                    },
+                    {
+                      "color": "green",
+                      "value": 107374182400
+                    }
+                  ]
+                },
+                "unit": "bits"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 30
+            },
+            "id": 82,
+            "options": {
+              "displayMode": "lcd",
+              "minVizHeight": 10,
+              "minVizWidth": 0,
+              "orientation": "horizontal",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "showUnfilled": true
+            },
+            "pluginVersion": "9.4.7",
+            "targets": [
+              {
+                "application": {
+                  "filter": ""
+                },
+                "countTriggersBy": "",
+                "datasource": {
+                  "type": "alexanderzobnin-zabbix-datasource",
+                  "uid": "${DS_ZABBIX}"
+                },
+                "functions": [
+                  {
+                    "added": true,
+                    "def": {
+                      "category": "Filter",
+                      "defaultParams": [
+                        5,
+                        "avg"
+                      ],
+                      "name": "bottom",
+                      "params": [
+                        {
+                          "name": "number",
+                          "type": "int"
+                        },
+                        {
+                          "name": "value",
+                          "options": [
+                            "avg",
+                            "min",
+                            "max",
+                            "sum",
+                            "count",
+                            "median",
+                            "first",
+                            "last"
+                          ],
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "5",
+                      "avg"
+                    ],
+                    "text": "bottom(5, avg)"
+                  },
+                  {
+                    "added": true,
+                    "def": {
+                      "category": "Alias",
+                      "defaultParams": [
+                        "/(.*)/",
+                        "$1"
+                      ],
+                      "name": "replaceAlias",
+                      "params": [
+                        {
+                          "name": "regexp",
+                          "type": "string"
+                        },
+                        {
+                          "name": "newAlias",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "/(.*)/",
+                      "$1 free space"
+                    ],
+                    "text": "replaceAlias(/(.*)/, $1)"
+                  }
+                ],
+                "group": {
+                  "filter": "$group"
+                },
+                "host": {
+                  "filter": "$appliance"
+                },
+                "item": {
+                  "filter": "/.*space metrics by file system free/"
+                },
+                "itemTag": {
+                  "filter": "metric: file_system"
+                },
+                "macro": {
+                  "filter": ""
+                },
+                "options": {
+                  "count": true,
+                  "disableDataAlignment": false,
+                  "minSeverity": 3,
+                  "showDisabledItems": false,
+                  "skipEmptyValues": false,
+                  "useTrends": "default",
+                  "useZabbixValueMapping": false
+                },
+                "proxy": {
+                  "filter": ""
+                },
+                "queryType": "0",
+                "refId": "A",
+                "resultFormat": "time_series",
+                "schema": 12,
+                "table": {
+                  "skipEmptyValues": false
+                },
+                "tags": {
+                  "filter": ""
+                },
+                "textFilter": "",
+                "trigger": {
+                  "filter": ""
+                },
+                "triggers": {
+                  "acknowledged": 2
+                }
+              }
+            ],
+            "title": "Volume free space bottom 5",
+            "transformations": [],
+            "type": "bargauge"
+          },
+          {
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 7,
+                  "gradientMode": "hue",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "smooth",
+                  "lineStyle": {
+                    "fill": "solid"
+                  },
+                  "lineWidth": 1,
+                  "pointSize": 4,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "Bps"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 12,
+              "y": 30
+            },
+            "id": 74,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "min",
+                  "max",
+                  "mean"
+                ],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "application": {
+                  "filter": ""
+                },
+                "countTriggersBy": "",
+                "datasource": {
+                  "type": "alexanderzobnin-zabbix-datasource",
+                  "uid": "${DS_ZABBIX}"
+                },
+                "functions": [
+                  {
+                    "added": true,
+                    "def": {
+                      "category": "Filter",
+                      "defaultParams": [
+                        5,
+                        "avg"
+                      ],
+                      "name": "top",
+                      "params": [
+                        {
+                          "name": "number",
+                          "type": "int"
+                        },
+                        {
+                          "name": "value",
+                          "options": [
+                            "avg",
+                            "min",
+                            "max",
+                            "sum",
+                            "count",
+                            "median",
+                            "first",
+                            "last"
+                          ],
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "5",
+                      "avg"
+                    ],
+                    "text": "top(5, avg)"
+                  },
+                  {
+                    "added": true,
+                    "def": {
+                      "category": "Alias",
+                      "defaultParams": [
+                        "/(.*)/",
+                        "$1"
+                      ],
+                      "name": "replaceAlias",
+                      "params": [
+                        {
+                          "name": "regexp",
+                          "type": "string"
+                        },
+                        {
+                          "name": "newAlias",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "/Discovered.*: (.*)/",
+                      "$1"
+                    ],
+                    "text": "replaceAlias(/(.*)/, $1)"
+                  }
+                ],
+                "group": {
+                  "filter": "$group"
+                },
+                "host": {
+                  "filter": "$appliance"
+                },
+                "item": {
+                  "filter": "/.* performance metrics by file system total_bandwidth/"
+                },
+                "itemTag": {
+                  "filter": "metric: file_system"
+                },
+                "macro": {
+                  "filter": ""
+                },
+                "options": {
+                  "count": true,
+                  "disableDataAlignment": false,
+                  "minSeverity": 3,
+                  "showDisabledItems": false,
+                  "skipEmptyValues": false,
+                  "useTrends": "default",
+                  "useZabbixValueMapping": false
+                },
+                "proxy": {
+                  "filter": ""
+                },
+                "queryType": "0",
+                "refId": "A",
+                "resultFormat": "time_series",
+                "schema": 12,
+                "table": {
+                  "skipEmptyValues": false
+                },
+                "tags": {
+                  "filter": ""
+                },
+                "textFilter": "",
+                "trigger": {
+                  "filter": ""
+                },
+                "triggers": {
+                  "acknowledged": 2
+                }
+              }
+            ],
+            "title": "File system bandwidth top 5",
+            "type": "timeseries"
+          },
+          {
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 7,
+                  "gradientMode": "hue",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "smooth",
+                  "lineStyle": {
+                    "fill": "solid"
+                  },
+                  "lineWidth": 1,
+                  "pointSize": 4,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "iops"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 38
+            },
+            "id": 75,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "min",
+                  "max",
+                  "mean"
+                ],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "application": {
+                  "filter": ""
+                },
+                "countTriggersBy": "",
+                "datasource": {
+                  "type": "alexanderzobnin-zabbix-datasource",
+                  "uid": "${DS_ZABBIX}"
+                },
+                "functions": [
+                  {
+                    "added": true,
+                    "def": {
+                      "category": "Filter",
+                      "defaultParams": [
+                        5,
+                        "avg"
+                      ],
+                      "name": "top",
+                      "params": [
+                        {
+                          "name": "number",
+                          "type": "int"
+                        },
+                        {
+                          "name": "value",
+                          "options": [
+                            "avg",
+                            "min",
+                            "max",
+                            "sum",
+                            "count",
+                            "median",
+                            "first",
+                            "last"
+                          ],
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "5",
+                      "avg"
+                    ],
+                    "text": "top(5, avg)"
+                  },
+                  {
+                    "added": true,
+                    "def": {
+                      "category": "Alias",
+                      "defaultParams": [
+                        "/(.*)/",
+                        "$1"
+                      ],
+                      "name": "replaceAlias",
+                      "params": [
+                        {
+                          "name": "regexp",
+                          "type": "string"
+                        },
+                        {
+                          "name": "newAlias",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "/Discovered.*: (.*)/",
+                      "$1"
+                    ],
+                    "text": "replaceAlias(/(.*)/, $1)"
+                  }
+                ],
+                "group": {
+                  "filter": "$group"
+                },
+                "host": {
+                  "filter": "$appliance"
+                },
+                "item": {
+                  "filter": "/.* performance metrics by file system total_iops/"
+                },
+                "itemTag": {
+                  "filter": "metric: file_system"
+                },
+                "macro": {
+                  "filter": ""
+                },
+                "options": {
+                  "count": true,
+                  "disableDataAlignment": false,
+                  "minSeverity": 3,
+                  "showDisabledItems": false,
+                  "skipEmptyValues": false,
+                  "useTrends": "default",
+                  "useZabbixValueMapping": false
+                },
+                "proxy": {
+                  "filter": ""
+                },
+                "queryType": "0",
+                "refId": "A",
+                "resultFormat": "time_series",
+                "schema": 12,
+                "table": {
+                  "skipEmptyValues": false
+                },
+                "tags": {
+                  "filter": ""
+                },
+                "textFilter": "",
+                "trigger": {
+                  "filter": ""
+                },
+                "triggers": {
+                  "acknowledged": 2
+                }
+              }
+            ],
+            "title": "File system IOPS top 5",
+            "type": "timeseries"
+          },
+          {
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 7,
+                  "gradientMode": "hue",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "smooth",
+                  "lineStyle": {
+                    "fill": "solid"
+                  },
+                  "lineWidth": 1,
+                  "pointSize": 4,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "µs"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 12,
+              "y": 38
+            },
+            "id": 76,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "min",
+                  "max",
+                  "mean"
+                ],
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "application": {
+                  "filter": ""
+                },
+                "countTriggersBy": "",
+                "datasource": {
+                  "type": "alexanderzobnin-zabbix-datasource",
+                  "uid": "${DS_ZABBIX}"
+                },
+                "functions": [
+                  {
+                    "added": true,
+                    "def": {
+                      "category": "Filter",
+                      "defaultParams": [
+                        5,
+                        "avg"
+                      ],
+                      "name": "top",
+                      "params": [
+                        {
+                          "name": "number",
+                          "type": "int"
+                        },
+                        {
+                          "name": "value",
+                          "options": [
+                            "avg",
+                            "min",
+                            "max",
+                            "sum",
+                            "count",
+                            "median",
+                            "first",
+                            "last"
+                          ],
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "5",
+                      "avg"
+                    ],
+                    "text": "top(5, avg)"
+                  },
+                  {
+                    "added": true,
+                    "def": {
+                      "category": "Alias",
+                      "defaultParams": [
+                        "/(.*)/",
+                        "$1"
+                      ],
+                      "name": "replaceAlias",
+                      "params": [
+                        {
+                          "name": "regexp",
+                          "type": "string"
+                        },
+                        {
+                          "name": "newAlias",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "params": [
+                      "/Discovered.*: (.*)/",
+                      "$1"
+                    ],
+                    "text": "replaceAlias(/(.*)/, $1)"
+                  }
+                ],
+                "group": {
+                  "filter": "$group"
+                },
+                "host": {
+                  "filter": "$appliance"
+                },
+                "item": {
+                  "filter": "/.* performance metrics by file system avg_latency/"
+                },
+                "itemTag": {
+                  "filter": "metric: file_system"
+                },
+                "macro": {
+                  "filter": ""
+                },
+                "options": {
+                  "count": true,
+                  "disableDataAlignment": false,
+                  "minSeverity": 3,
+                  "showDisabledItems": false,
+                  "skipEmptyValues": false,
+                  "useTrends": "default",
+                  "useZabbixValueMapping": false
+                },
+                "proxy": {
+                  "filter": ""
+                },
+                "queryType": "0",
+                "refId": "A",
+                "resultFormat": "time_series",
+                "schema": 12,
+                "table": {
+                  "skipEmptyValues": false
+                },
+                "tags": {
+                  "filter": ""
+                },
+                "textFilter": "",
+                "trigger": {
+                  "filter": ""
+                },
+                "triggers": {
+                  "acknowledged": 2
+                }
+              }
+            ],
+            "title": "File system avg latency top 5",
+            "type": "timeseries"
+          }
+        ],
+        "targets": [
+          {
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "tgY0YwS4k"
+            },
+            "refId": "A"
+          }
+        ],
+        "title": "File system metric",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 30
+        },
+        "id": 86,
+        "panels": [
+          {
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "custom": {
+                  "align": "auto",
+                  "cellOptions": {
+                    "type": "auto"
+                  },
+                  "inspect": true
+                },
+                "mappings": [
+                  {
+                    "options": {
+                      "Healthy": {
+                        "color": "green",
+                        "index": 0,
+                        "text": "Healthy"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red"
+                    }
+                  ]
+                }
+              },
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byRegexp",
+                    "options": "/Drive.*/"
+                  },
+                  "properties": [
+                    {
+                      "id": "custom.cellOptions",
+                      "value": {
+                        "mode": "basic",
+                        "type": "color-background"
+                      }
+                    },
+                    {
+                      "id": "custom.filterable",
+                      "value": true
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 24,
+              "x": 0,
+              "y": 47
+            },
+            "id": 84,
+            "options": {
+              "footer": {
+                "countRows": false,
+                "fields": "",
+                "reducer": [
+                  "sum"
+                ],
+                "show": false
+              },
+              "showHeader": true
+            },
+            "pluginVersion": "9.4.7",
+            "targets": [
+              {
+                "application": {
+                  "filter": ""
+                },
+                "countTriggersBy": "",
+                "datasource": {
+                  "type": "alexanderzobnin-zabbix-datasource",
+                  "uid": "${DS_ZABBIX}"
+                },
+                "functions": [],
+                "group": {
+                  "filter": "$group"
+                },
+                "host": {
+                  "filter": "$appliance"
+                },
+                "item": {
+                  "filter": "/State of Drive_.*/"
+                },
+                "itemTag": {
+                  "filter": ""
+                },
+                "macro": {
+                  "filter": ""
+                },
+                "options": {
+                  "count": false,
+                  "disableDataAlignment": false,
+                  "showDisabledItems": false,
+                  "skipEmptyValues": false,
+                  "useTrends": "default",
+                  "useZabbixValueMapping": false
+                },
+                "proxy": {
+                  "filter": ""
+                },
+                "queryType": "2",
+                "refId": "A",
+                "resultFormat": "time_series",
+                "schema": 12,
+                "table": {
+                  "skipEmptyValues": false
+                },
+                "tags": {
+                  "filter": ""
+                },
+                "textFilter": "",
+                "trigger": {
+                  "filter": ""
+                }
+              }
+            ],
+            "title": "Drive state",
+            "transformations": [
+              {
+                "id": "renameByRegex",
+                "options": {
+                  "regex": "State of (.*)",
+                  "renamePattern": "$1"
+                }
+              }
+            ],
+            "type": "table"
+          },
+          {
+            "datasource": {
+              "type": "alexanderzobnin-zabbix-datasource",
+              "uid": "${DS_ZABBIX}"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "custom": {
+                  "align": "auto",
+                  "cellOptions": {
+                    "type": "auto"
+                  },
+                  "inspect": true
+                },
+                "mappings": [
+                  {
+                    "options": {
+                      "Empty": {
+                        "color": "text",
+                        "index": 1,
+                        "text": "Empty"
+                      },
+                      "Healthy": {
+                        "color": "green",
+                        "index": 0,
+                        "text": "Healthy"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red"
+                    }
+                  ]
+                }
+              },
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byRegexp",
+                    "options": "/.*-DIMM.*/"
+                  },
+                  "properties": [
+                    {
+                      "id": "custom.cellOptions",
+                      "value": {
+                        "mode": "basic",
+                        "type": "color-background"
+                      }
+                    },
+                    {
+                      "id": "custom.filterable",
+                      "value": true
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 24,
+              "x": 0,
+              "y": 55
+            },
+            "id": 87,
+            "options": {
+              "footer": {
+                "countRows": false,
+                "fields": "",
+                "reducer": [
+                  "sum"
+                ],
+                "show": false
+              },
+              "showHeader": true
+            },
+            "pluginVersion": "9.4.7",
+            "targets": [
+              {
+                "application": {
+                  "filter": ""
+                },
+                "countTriggersBy": "",
+                "datasource": {
+                  "type": "alexanderzobnin-zabbix-datasource",
+                  "uid": "${DS_ZABBIX}"
+                },
+                "functions": [],
+                "group": {
+                  "filter": "$group"
+                },
+                "host": {
+                  "filter": "$appliance"
+                },
+                "item": {
+                  "filter": "/State of .*-DIMM.*/"
+                },
+                "itemTag": {
+                  "filter": ""
+                },
+                "macro": {
+                  "filter": ""
+                },
+                "options": {
+                  "count": false,
+                  "disableDataAlignment": false,
+                  "showDisabledItems": false,
+                  "skipEmptyValues": false,
+                  "useTrends": "default",
+                  "useZabbixValueMapping": false
+                },
+                "proxy": {
+                  "filter": ""
+                },
+                "queryType": "2",
+                "refId": "A",
+                "resultFormat": "time_series",
+                "schema": 12,
+                "table": {
+                  "skipEmptyValues": false
+                },
+                "tags": {
+                  "filter": ""
+                },
+                "textFilter": "",
+                "trigger": {
+                  "filter": ""
+                }
+              }
+            ],
+            "title": "DIMM state",
+            "transformations": [
+              {
+                "id": "renameByRegex",
+                "options": {
+                  "regex": "State of (.*)",
+                  "renamePattern": "$1"
+                }
+              }
+            ],
+            "type": "table"
+          }
+        ],
+        "title": "Hardware",
+        "type": "row"
+      }
+    ],
+    "refresh": "",
+    "revision": 1,
+    "schemaVersion": 38,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "current": {},
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "${DS_ZABBIX}"
+          },
+          "definition": "Zabbix - group",
+          "hide": 0,
+          "includeAll": false,
+          "label": "Group",
+          "multi": false,
+          "name": "group",
+          "options": [],
+          "query": {
+            "application": "",
+            "group": "PowerStore",
+            "host": "",
+            "item": "",
+            "itemTag": "",
+            "queryType": "group"
+          },
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "current": {},
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "${DS_ZABBIX}"
+          },
+          "definition": "Zabbix - host",
+          "hide": 0,
+          "includeAll": false,
+          "label": "Cluster",
+          "multi": false,
+          "name": "cluster",
+          "options": [],
+          "query": {
+            "application": "",
+            "group": "$group",
+            "host": "/.*/",
+            "item": "",
+            "itemTag": "",
+            "queryType": "host"
+          },
+          "refresh": 1,
+          "regex": "/^(?!Discovered appliance).*/",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "current": {},
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "${DS_ZABBIX}"
+          },
+          "definition": "Zabbix - host",
+          "hide": 0,
+          "includeAll": false,
+          "label": "Appliance",
+          "multi": false,
+          "name": "appliance",
+          "options": [],
+          "query": {
+            "application": "",
+            "group": "/^$cluster/",
+            "host": "/.*/",
+            "item": "",
+            "itemTag": "",
+            "queryType": "host"
+          },
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-12h",
+      "to": "now"
+    },
+    "timepicker": {
+      "hidden": false
+    },
+    "timezone": "",
+    "title": "PowerStore Dashboard",
+    "uid": "U484lZbVz",
+    "version": 95,
+    "weekStart": ""
+  }
